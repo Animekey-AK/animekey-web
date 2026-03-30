@@ -288,7 +288,7 @@ const topRanked: TopRankedData = {
 
 const appDownload: AppDownloadData = {
   status: ready,
-  title: "Take AniKey with you on any screen.",
+  title: "Take Animekey with you on any screen.",
   description:
     "A simple download block that can later point to the real mobile app stores without changing the homepage contract.",
   stores: [
@@ -318,7 +318,7 @@ const appDownload: AppDownloadData = {
 export const homepageData: HomepageData = {
   hero: {
     status: ready,
-    eyebrow: "ANIKEY HOME",
+    eyebrow: "ANIMEKEY HOME",
     title: "Watch anime, movies, and series with one smooth home screen.",
     description:
       "A compact homepage built for discovery: featured picks, ranked titles, and quick paths into the catalog.",

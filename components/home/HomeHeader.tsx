@@ -1,6 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
+import { cn } from "@/lib/utils";
 import { routes } from "@/constants/routes";
 
 const navLinks = [
@@ -10,16 +14,18 @@ const navLinks = [
 ];
 
 export function HomeHeader() {
+  const pathname = usePathname();
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/72 backdrop-blur-2xl">
-      <div className="mx-auto flex h-18 max-w-screen-2xl items-center justify-between gap-4 px-4 py-3 md:px-8">
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-2xl">
+      <div className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between gap-4 px-4 md:px-8">
         <Link href={routes.home} className="flex items-center gap-3">
           <Image
             src="/images/logo.svg"
             alt="AnimeKey"
             width={116}
             height={26}
-            className="h-auto w-[7.25rem]"
+            className="h-12 w-auto"
           />
         </Link>
 
@@ -28,7 +34,12 @@ export function HomeHeader() {
             <Link
               key={link.label}
               href={link.href}
-              className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-white/[0.06] hover:text-foreground"
+              className={cn(
+                "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                pathname === link.href
+                  ? "bg-white/[0.08] text-foreground"
+                  : "text-muted-foreground hover:bg-white/[0.06] hover:text-foreground"
+              )}
             >
               {link.label}
             </Link>
