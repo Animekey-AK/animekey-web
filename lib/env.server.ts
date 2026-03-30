@@ -22,6 +22,9 @@ export const env = createEnv({
     // API
     API_BASE_URL: z.string().url(),
     API_KEY: z.string().min(1),
+    // Guest session — Basic Auth credentials, server-side only (fixes ANI-6)
+    GUEST_BASIC_USER: z.string().min(1),
+    GUEST_BASIC_PASS: z.string().min(1),
   },
   experimental__runtimeEnv: process.env,
 });

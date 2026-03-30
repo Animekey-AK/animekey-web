@@ -6,12 +6,10 @@ export default defineConfig([
   ...nextVitals,
   ...nextTs,
   globalIgnores([
+    "animekey-v2-*/**",
     ".next/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
-    "public/**",
-    "animekey-v2-ANI-101/**",
-    "animekey-v2-ANI-103/**",
   ]),
 ]);

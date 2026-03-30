@@ -9,6 +9,7 @@ declare module "next-auth" {
       name: string | null;
       image: string | null;
       accessToken?: string;
+      profileId?: string;
     } & DefaultSession["user"];
     error?: "RefreshTokenError";
   }

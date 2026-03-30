@@ -36,7 +36,7 @@ function apiHeaders(): Record<string, string> {
   };
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   // ─── Providers ─────────────────────────────────────────────────────────────
   providers: [
     // Email / password — delegates to AnimeKey backend API
@@ -103,7 +103,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   // ─── Callbacks ─────────────────────────────────────────────────────────────
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger, session }) {
+      // Profile selection update — called from selectProfile Server Action
+      if (trigger === "update" && session?.profileId) {
+        token.profileId = session.profileId as string;
+        return token;
+      }
+
       // Initial sign-in — persist user fields into JWT
       if (user) {
         token.id = user.id ?? token.sub ?? "";
@@ -157,10 +163,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         id?: string;
         sub?: string;
         accessToken?: string;
+        profileId?: string;
         error?: "RefreshTokenError";
       };
       session.user.id = t.id ?? t.sub ?? "";
       if (t.accessToken) session.user.accessToken = t.accessToken;
+      if (t.profileId) session.user.profileId = t.profileId;
       if (t.error) session.error = t.error;
       return session;
     },
