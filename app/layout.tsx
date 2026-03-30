@@ -1,13 +1,32 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Inter, Anton, Montserrat } from "next/font/google";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+// ─── Fonts — matched to Figma (phone-site-animekey) ─────────────────────────
+// Primary UI font
+const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-sans",
-  weight: "100 900",
+  display: "swap",
 });
 
+// Hero / display titles (e.g. "Devil May Cry" heading)
+const anton = Anton({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-display",
+  display: "swap",
+});
+
+// Description / body copy
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-description",
+  display: "swap",
+});
+
+// Monospace (code, timestamps)
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-mono",
@@ -20,7 +39,9 @@ export const metadata: Metadata = {
     template: "%s | AnimeKey",
   },
   description: "Stream anime, movies, and series — anytime, anywhere.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+  ),
 };
 
 export default function RootLayout({
@@ -29,10 +50,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
-      </body>
+    <html
+      lang="en"
+      className={`${inter.variable} ${anton.variable} ${montserrat.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
