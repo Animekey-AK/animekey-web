@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter, Anton, Montserrat } from "next/font/google";
 import "./globals.css";
+import { SessionProvider } from "@/components/providers/SessionProvider";
 
 // ─── Fonts — matched to Figma (phone-site-animekey) ─────────────────────────
 // Primary UI font
@@ -55,7 +56,9 @@ export default function RootLayout({
       className={`${inter.variable} ${anton.variable} ${montserrat.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <SessionProvider>{children}</SessionProvider>
+      </body>
     </html>
   );
 }
