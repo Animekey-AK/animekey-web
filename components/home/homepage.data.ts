@@ -23,13 +23,13 @@ const heroMedia: MediaItem = {
 
 const heroCtas: HeroData["ctas"] = [
   {
-    label: "Start watching",
-    href: routes.register,
+    label: "Browse the catalog",
+    href: routes.movies,
     intent: "primary",
   },
   {
-    label: "Browse the catalog",
-    href: routes.movies,
+    label: "Start free",
+    href: routes.register,
     intent: "secondary",
   },
   {
