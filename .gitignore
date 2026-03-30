@@ -41,8 +41,7 @@ yarn-error.log*
 .playwright-mcp/
 docs/superpowers/
 
-# local research files
-*.html
+
 
 # typescript
 *.tsbuildinfo
@@ -59,3 +58,10 @@ apps/mobile/.expo
 
 # Next.js per-app build artifacts
 apps/web/.next/
+
+*storybook.log
+storybook-static
+
+# Playwright / dev screenshots
+*.png
+*.html
