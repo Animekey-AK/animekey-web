@@ -85,6 +85,16 @@
     text-wrap: balance;
   }
 
+  /* Hero CTA pulse animation */
+  @keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(113, 199, 4, 0.45), 0 16px 48px rgba(113, 199, 4, 0.35); }
+    50%       { box-shadow: 0 0 0 12px rgba(113, 199, 4, 0), 0 20px 56px rgba(113, 199, 4, 0.35); }
+  }
+  .animate-cta-pulse {
+    animation: cta-pulse 2.4s ease-in-out infinite;
+  }
+
+
   /* Streaming layout utilities */
   .aspect-poster {
     aspect-ratio: 2 / 3;

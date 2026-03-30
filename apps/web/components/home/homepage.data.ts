@@ -2,10 +2,9 @@ import { routes } from "@/constants/routes";
 
 import type {
   AppDownloadData,
+  HeroCinematicData,
   HomepageData,
-  HeroData,
   HomeSection,
-  MediaItem,
   ProofPoint,
   ProofStripData,
   PromoData,
@@ -16,28 +15,95 @@ import type {
 
 const ready: SectionStatus = "ready";
 
-const heroMedia: MediaItem = {
-  src: "/images/login/login-right.svg",
-  alt: "Featured AnimeKey hero artwork",
+// ── Hero (cinematic, 4 slides) ────────────────────────────────────────────────
+
+const heroCinematic: HeroCinematicData = {
+  status: ready,
+  slides: [
+    {
+      id: "solo-leveling",
+      showName: "Solo Leveling",
+      showSub: "Season 2, Episode 12 just dropped",
+      pills: [
+        { label: "★ 9.2", accent: true },
+        { label: "24 episodes" },
+        { label: "Season 2" },
+        { label: "Sub & Dub" },
+      ],
+      description:
+        "A weak hunter awakens the power to level up alone — and becomes the strongest in the world.",
+      watchHref: routes.watch("solo-leveling"),
+      liveViewerCount: 52800,
+      colorVariant: "lime",
+      posterImage: "/images/onboarding/landingOnboardingBackground.svg",
+      modalMeta: "Season 2 • 24 eps",
+      modalDescription:
+        "A weak hunter awakens the power to level up alone — and becomes the strongest in the world. The most-watched anime this season.",
+    },
+    {
+      id: "demon-slayer",
+      showName: "Demon Slayer",
+      showSub: "Season 3, Episode 8 — Infinity Castle Arc",
+      pills: [
+        { label: "★ 9.0", accent: true },
+        { label: "44 episodes" },
+        { label: "Season 3" },
+        { label: "Sub & Dub" },
+      ],
+      description:
+        "A boy becomes a demon slayer to avenge his family. The most stunning animation ever made.",
+      watchHref: routes.watch("demon-slayer"),
+      liveViewerCount: 38172,
+      colorVariant: "purple",
+      posterImage: "/images/login/login-right.svg",
+      modalMeta: "Season 3 • 44 eps",
+      modalDescription:
+        "A young boy becomes a demon slayer to avenge his family and cure his sister. The most beautiful animation in anime history.",
+    },
+    {
+      id: "jujutsu-kaisen",
+      showName: "Jujutsu Kaisen",
+      showSub: "Season 3, Episode 12 just dropped",
+      pills: [
+        { label: "★ 9.1", accent: true },
+        { label: "60+ episodes" },
+        { label: "Season 3" },
+        { label: "Sub & Dub" },
+      ],
+      description:
+        "Cursed energy. Death matches. A boy who consumed a curse and became something else entirely.",
+      watchHref: routes.watch("jujutsu-kaisen"),
+      liveViewerCount: 44200,
+      colorVariant: "pink",
+      posterImage: "/images/onboarding/forgot-reset-passoword.png",
+      modalMeta: "Season 3 • 60+ eps",
+      modalDescription:
+        "Cursed energy. Death matches. A boy who consumed a powerful curse and became something else entirely.",
+    },
+    {
+      id: "frieren",
+      showName: "Frieren: Beyond Journey's End",
+      showSub: "Complete series — All 28 episodes",
+      pills: [
+        { label: "★ 9.4", accent: true },
+        { label: "28 episodes" },
+        { label: "Complete" },
+        { label: "Sub & Dub" },
+      ],
+      description:
+        "A centuries-old elf mage slowly learns what it means to feel. The most-rated anime of the year.",
+      watchHref: routes.watch("frieren-beyond-journeys-end"),
+      liveViewerCount: 29600,
+      colorVariant: "amber",
+      posterImage: "/images/onboarding/landingOnboardingBackground.svg",
+      modalMeta: "Complete • 28 eps",
+      modalDescription:
+        "A centuries-old elf mage retraces a journey that meant nothing to her — and slowly learns what it means to feel.",
+    },
+  ],
 };
 
-const heroCtas: HeroData["ctas"] = [
-  {
-    label: "Browse the catalog",
-    href: routes.movies,
-    intent: "primary",
-  },
-  {
-    label: "Start free",
-    href: routes.register,
-    intent: "secondary",
-  },
-  {
-    label: "See plans",
-    href: routes.plans,
-    intent: "tertiary",
-  },
-];
+// ── Proof strip ───────────────────────────────────────────────────────────────
 
 const proofPoints: ReadonlyArray<ProofPoint> = [
   {
@@ -82,6 +148,8 @@ const proofStrip: ProofStripData = {
   status: ready,
   items: proofPoints,
 };
+
+// ── Content rails ─────────────────────────────────────────────────────────────
 
 const rails: ReadonlyArray<RailData> = [
   {
@@ -206,6 +274,8 @@ const rails: ReadonlyArray<RailData> = [
   },
 ];
 
+// ── Promo banner ──────────────────────────────────────────────────────────────
+
 const promoBanner: PromoData = {
   status: ready,
   badge: "Limited launch promo",
@@ -227,6 +297,8 @@ const promoBanner: PromoData = {
     alt: "Premium promo artwork",
   },
 };
+
+// ── Top ranked ────────────────────────────────────────────────────────────────
 
 const topRanked: TopRankedData = {
   status: ready,
@@ -286,6 +358,8 @@ const topRanked: TopRankedData = {
   ],
 };
 
+// ── App download ──────────────────────────────────────────────────────────────
+
 const appDownload: AppDownloadData = {
   status: ready,
   title: "Take AnimeKey with you on any screen.",
@@ -315,33 +389,10 @@ const appDownload: AppDownloadData = {
   },
 };
 
+// ── Exports ───────────────────────────────────────────────────────────────────
+
 export const homepageData: HomepageData = {
-  hero: {
-    status: ready,
-    eyebrow: "ANIMEKEY HOME",
-    title: "Watch anime, movies, and series with one smooth home screen.",
-    description:
-      "A compact homepage built for discovery: featured picks, ranked titles, and quick paths into the catalog.",
-    ctas: heroCtas,
-    media: heroMedia,
-    stats: [
-      {
-        label: "Featured collections",
-        value: "12+",
-        detail: "ready for launch",
-      },
-      {
-        label: "Fast access routes",
-        value: "3",
-        detail: "movies, series, plans",
-      },
-      {
-        label: "Ranking spotlight",
-        value: "Top 5",
-        detail: "highlight rail",
-      },
-    ],
-  },
+  hero: heroCinematic,
   proofStrip,
   rails,
   promoBanner,

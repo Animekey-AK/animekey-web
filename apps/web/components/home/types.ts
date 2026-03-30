@@ -17,25 +17,53 @@ export interface CallToAction {
   intent: CallToActionIntent;
 }
 
-export interface HeroData {
-  status: SectionStatus;
-  eyebrow: string;
-  title: string;
-  description: string;
-  ctas: ReadonlyArray<CallToAction>;
-  media: MediaItem;
-  stats: ReadonlyArray<{
-    label: string;
-    value: string;
-    detail?: string;
-  }>;
+// ── Hero (cinematic full-screen) ──────────────────────────────────────────────
+
+export interface HeroPill {
+  label: string;
+  /** true = render in lime green */
+  accent?: boolean;
 }
+
+export interface HeroSlide {
+  id: string;
+  showName: string;
+  /** e.g. "Season 2, Episode 12 just dropped" */
+  showSub: string;
+  pills: ReadonlyArray<HeroPill>;
+  description: string;
+  /** Route to watch page for episode 1 */
+  watchHref: string;
+  /** Initial live viewer count — drifts client-side */
+  liveViewerCount: number;
+  /** Controls the color-shifted gradient background */
+  colorVariant: "lime" | "purple" | "pink" | "amber";
+  /** Show poster image path */
+  posterImage: string;
+  /** Short meta for modal e.g. "Season 2 • 24 eps" */
+  modalMeta: string;
+  modalDescription: string;
+}
+
+export interface HeroCinematicData {
+  status: SectionStatus;
+  slides: ReadonlyArray<HeroSlide>;
+}
+
+// ── Proof strip ───────────────────────────────────────────────────────────────
 
 export interface ProofPoint {
   title: string;
   description: string;
   media: MediaItem;
 }
+
+export interface ProofStripData {
+  status: SectionStatus;
+  items: ReadonlyArray<ProofPoint>;
+}
+
+// ── Content rails ─────────────────────────────────────────────────────────────
 
 export interface RailData {
   status: SectionStatus;
@@ -55,6 +83,8 @@ export interface RailData {
   }>;
 }
 
+// ── Promo banner ──────────────────────────────────────────────────────────────
+
 export interface PromoData {
   status: SectionStatus;
   badge?: string;
@@ -64,6 +94,8 @@ export interface PromoData {
   secondaryCta?: CallToAction;
   media: MediaItem;
 }
+
+// ── Top ranked ────────────────────────────────────────────────────────────────
 
 export interface TopRankedData {
   status: SectionStatus;
@@ -78,6 +110,8 @@ export interface TopRankedData {
   }>;
 }
 
+// ── App download ──────────────────────────────────────────────────────────────
+
 export interface AppDownloadData {
   status: SectionStatus;
   title: string;
@@ -90,13 +124,10 @@ export interface AppDownloadData {
   media?: MediaItem;
 }
 
-export interface ProofStripData {
-  status: SectionStatus;
-  items: ReadonlyArray<ProofPoint>;
-}
+// ── Homepage root ─────────────────────────────────────────────────────────────
 
 export interface HomepageData {
-  hero: HeroData;
+  hero: HeroCinematicData;
   proofStrip: ProofStripData;
   rails: ReadonlyArray<RailData>;
   promoBanner: PromoData;
@@ -107,7 +138,7 @@ export interface HomepageData {
 export type HomeSection =
   | {
       type: "hero";
-      data: HeroData;
+      data: HeroCinematicData;
     }
   | {
       type: "proofStrip";

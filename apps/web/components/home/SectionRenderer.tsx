@@ -12,7 +12,9 @@ export function SectionRenderer({ sections }: { sections: HomeSection[] }) {
       {sections.map((section, index) => {
         switch (section.type) {
           case "hero":
-            return <HeroSpotlight key={`hero-${index}`} hero={section.data} />;
+            return (
+              <HeroSpotlight key={`hero-${index}`} hero={section.data} />
+            );
           case "proofStrip":
             return <ProofStrip key={`proof-${index}`} section={section.data} />;
           case "rails":
