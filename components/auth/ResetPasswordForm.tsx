@@ -67,12 +67,12 @@ export function ResetPasswordForm() {
   }
 
   const inputClass =
-    "w-full rounded-md border border-input bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
+    "w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-ring";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {error && (
-        <p className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+        <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {error}
         </p>
       )}
@@ -91,7 +91,7 @@ export function ResetPasswordForm() {
         <button
           type="button"
           onClick={() => setShowPassword((v) => !v)}
-          className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+          className="absolute right-3 top-3.5 text-muted-foreground hover:text-foreground"
           aria-label="Toggle password visibility"
         >
           <EyeIcon open={showPassword} />
@@ -111,7 +111,7 @@ export function ResetPasswordForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="mt-2 rounded-md bg-primary py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+        className="mt-2 rounded-full bg-primary py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-[0_20px_50px_rgba(113,199,4,0.24)] transition-opacity hover:opacity-90 disabled:opacity-50"
       >
         {isPending ? "Resetting…" : "Reset Password"}
       </button>

@@ -36,11 +36,11 @@ export function ForgotPasswordForm() {
   }
 
   const inputClass =
-    "w-full rounded-md border border-input bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
+    "w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-ring";
 
   if (sent) {
-    return (
-      <div className="rounded-md bg-primary/10 px-4 py-6 text-center text-sm text-primary">
+      return (
+      <div className="rounded-[1.75rem] border border-primary/20 bg-primary/10 px-5 py-6 text-center text-sm text-primary">
         <p className="font-semibold">Check your email</p>
         <p className="mt-1 text-muted-foreground">
           If <span className="text-foreground">{email}</span> is registered, a reset link is on its way.
@@ -55,7 +55,7 @@ export function ForgotPasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {error && (
-        <p className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+        <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {error}
         </p>
       )}
@@ -73,7 +73,7 @@ export function ForgotPasswordForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="mt-2 rounded-md bg-primary py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+        className="mt-2 rounded-full bg-primary py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-[0_20px_50px_rgba(113,199,4,0.24)] transition-opacity hover:opacity-90 disabled:opacity-50"
       >
         {isPending ? "Sending…" : "Send Reset Link"}
       </button>

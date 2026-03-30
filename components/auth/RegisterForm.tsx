@@ -101,17 +101,16 @@ export function RegisterForm() {
   }
 
   const inputClass =
-    "w-full rounded-md border border-input bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
+    "w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-ring";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {error && (
-        <p className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+        <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {error}
         </p>
       )}
 
-      {/* Name row */}
       <div className="grid grid-cols-2 gap-3">
         <input
           type="text" placeholder="First Name" required autoComplete="given-name"
@@ -125,14 +124,12 @@ export function RegisterForm() {
         />
       </div>
 
-      {/* Email */}
       <input
         type="text" placeholder="Enter Email or Phone Number" required autoComplete="email"
         value={fields.email} onChange={(e) => update("email", e.target.value)}
         className={inputClass}
       />
 
-      {/* Password */}
       <div className="relative">
         <input
           type={showPassword ? "text" : "password"} placeholder="Password" required
@@ -141,13 +138,12 @@ export function RegisterForm() {
           className={`${inputClass} pr-12`}
         />
         <button type="button" onClick={() => setShowPassword((v) => !v)}
-          className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+          className="absolute right-3 top-3.5 text-muted-foreground hover:text-foreground"
           aria-label="Toggle password visibility">
           <EyeIcon open={showPassword} />
         </button>
       </div>
 
-      {/* Confirm password */}
       <input
         type="password" placeholder="Confirm Password" required autoComplete="new-password"
         value={fields.confirmPassword}
@@ -155,7 +151,6 @@ export function RegisterForm() {
         className={inputClass}
       />
 
-      {/* Date of birth */}
       <div className="grid grid-cols-3 gap-3">
         <input type="text" placeholder="DD" maxLength={2}
           value={fields.dateOfBirth.day}
@@ -171,8 +166,7 @@ export function RegisterForm() {
           className={inputClass} />
       </div>
 
-      {/* Terms */}
-      <label className="flex items-start gap-3 text-sm">
+      <label className="flex items-start gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-sm">
         <input type="checkbox" required
           checked={fields.acceptedTerms}
           onChange={(e) => update("acceptedTerms", e.target.checked)}
@@ -186,28 +180,27 @@ export function RegisterForm() {
         </span>
       </label>
 
-      {/* Submit */}
       <button type="submit" disabled={isPending}
-        className="mt-2 rounded-md bg-primary py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50">
+        className="mt-2 rounded-full bg-primary py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-[0_20px_50px_rgba(113,199,4,0.24)] transition-opacity hover:opacity-90 disabled:opacity-50">
         {isPending ? "Creating account…" : "Create Account"}
       </button>
 
-      {/* Divider */}
       <div className="relative my-1 flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">or</span>
-        <div className="h-px flex-1 bg-border" />
+        <div className="h-px flex-1 bg-white/10" />
+        <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          or continue with
+        </span>
+        <div className="h-px flex-1 bg-white/10" />
       </div>
 
-      {/* OAuth */}
       <button type="button" onClick={() => signIn("google", { callbackUrl: routes.home })}
-        className="flex items-center justify-center gap-3 rounded-md border border-input bg-transparent py-3 text-sm font-medium transition-colors hover:bg-accent">
+        className="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.02] py-3.5 text-sm font-medium transition-colors hover:bg-white/[0.06]">
         <Image src="/images/google-icon.svg" alt="" width={20} height={20} />
         Continue with Google
       </button>
 
       <button type="button" onClick={() => signIn("facebook", { callbackUrl: routes.home })}
-        className="flex items-center justify-center gap-3 rounded-md border border-input bg-transparent py-3 text-sm font-medium transition-colors hover:bg-accent">
+        className="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.02] py-3.5 text-sm font-medium transition-colors hover:bg-white/[0.06]">
         <Image src="/images/facebook-icon.svg" alt="" width={20} height={20} />
         Continue with Facebook
       </button>

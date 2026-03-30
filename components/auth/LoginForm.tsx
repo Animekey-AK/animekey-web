@@ -45,15 +45,16 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      {/* Error banner */}
       {error && (
-        <p className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+        <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {error}
         </p>
       )}
 
-      {/* Email */}
       <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/55">
+          Email or phone
+        </label>
         <input
           type="text"
           placeholder="Enter Email or Phone Number"
@@ -61,12 +62,14 @@ export function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           autoComplete="email"
-          className="rounded-md border border-input bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-ring"
         />
       </div>
 
-      {/* Password */}
       <div className="relative flex flex-col gap-1.5">
+        <label className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/55">
+          Password
+        </label>
         <input
           type={showPassword ? "text" : "password"}
           placeholder="Password"
@@ -74,12 +77,12 @@ export function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           autoComplete="current-password"
-          className="rounded-md border border-input bg-input px-4 py-3 pr-12 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3.5 pr-12 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-ring"
         />
         <button
           type="button"
           onClick={() => setShowPassword((v) => !v)}
-          className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+          className="absolute right-3 top-[2.45rem] text-muted-foreground hover:text-foreground"
           aria-label={showPassword ? "Hide password" : "Show password"}
         >
           {showPassword ? (
@@ -98,37 +101,35 @@ export function LoginForm() {
         </button>
       </div>
 
-      {/* Forgot password */}
       <div className="text-right">
         <Link
           href={routes.forgotPassword}
-          className="text-xs font-semibold uppercase tracking-wide text-primary hover:underline"
+          className="text-xs font-semibold uppercase tracking-[0.18em] text-primary hover:underline"
         >
           Forgot Password?
         </Link>
       </div>
 
-      {/* Submit */}
       <button
         type="submit"
         disabled={isPending}
-        className="mt-2 rounded-md bg-primary py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+        className="mt-2 rounded-full bg-primary py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-[0_20px_50px_rgba(113,199,4,0.24)] transition-all hover:opacity-90 disabled:opacity-50"
       >
         {isPending ? "Signing in…" : "Login"}
       </button>
 
-      {/* Divider */}
       <div className="relative my-2 flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">or</span>
-        <div className="h-px flex-1 bg-border" />
+        <div className="h-px flex-1 bg-white/10" />
+        <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          or continue with
+        </span>
+        <div className="h-px flex-1 bg-white/10" />
       </div>
 
-      {/* OAuth buttons */}
       <button
         type="button"
         onClick={() => handleOAuth("google")}
-        className="flex items-center justify-center gap-3 rounded-md border border-input bg-transparent py-3 text-sm font-medium transition-colors hover:bg-accent"
+        className="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.02] py-3.5 text-sm font-medium transition-colors hover:bg-white/[0.06]"
       >
         <Image src="/images/google-icon.svg" alt="" width={20} height={20} />
         Continue with Google
@@ -137,7 +138,7 @@ export function LoginForm() {
       <button
         type="button"
         onClick={() => handleOAuth("facebook")}
-        className="flex items-center justify-center gap-3 rounded-md border border-input bg-transparent py-3 text-sm font-medium transition-colors hover:bg-accent"
+        className="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.02] py-3.5 text-sm font-medium transition-colors hover:bg-white/[0.06]"
       >
         <Image src="/images/facebook-icon.svg" alt="" width={20} height={20} />
         Continue with Facebook
