@@ -5,9 +5,9 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
-    // NextAuth
-    NEXTAUTH_SECRET: z.string().min(32),
-    NEXTAUTH_URL: z.string().url(),
+    // NextAuth v5
+    AUTH_SECRET: z.string().min(32),
+    AUTH_URL: z.string().url().optional(), // auto-detected in dev
     // OAuth
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
