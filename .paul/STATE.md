@@ -10,20 +10,26 @@ See: .paul/PROJECT.md (updated 2026-03-31)
 ## Current Position
 
 Milestone: v1 — Web Platform (v1.0.0)
-Phase: 2 of 8 (Homepage Conversion) — Not started
-Plan: Not started
-Status: Phase 1 complete — ready to plan Phase 2
-Last activity: 2026-03-31 — Phase 1 complete (monorepo foundation)
+Phase: 2 of 8 (Homepage Conversion) — In Progress (1 plan complete, more plans may follow)
+Plan: 02-02 complete
+Status: Loop closed — ready for next PLAN
+Last activity: 2026-03-31 — Cinematic hero rebuild shipped; responsive fix verified at 390/768/1440px
+
+Notes:
+- 02-01-PLAN.md was written against the wrong design (card-based hero). ABORTED, all changes reverted.
+- 02-02-PLAN.md executed and unified: HeroSpotlight cinematic rewrite, HomeHeader, HeroPreviewModal.
+- Storybook stories co-located for HeroSpotlight + HomeHeader.
+- Homepage layout contract: main gets pt-16, hero wrapper gets -mt-16 for full-bleed behind fixed header.
 
 Progress:
-- Milestone: [█░░░░░░░░░] 12%
-- Phase 1: [██████████] 100% ✅
+- Milestone: [██░░░░░░░░] 22%
+- Phase 2: [████░░░░░░] 40%
 
 ## Loop Position
 
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Phase 1 complete — ready to plan Phase 2]
+  ✓        ✓        ✓     [Loop 02-02 complete — ready for next PLAN]
 ```
 
 ## Accumulated Context
@@ -57,9 +63,9 @@ None active.
 ## Session Continuity
 
 Last session: 2026-03-31
-Stopped at: Phase 1 complete — monorepo foundation fully in place
-Next action: Run `/paul:plan` to begin Phase 2 (Homepage Conversion)
-Resume context: Monorepo active — apps/web at apps/web/, tokens at packages/tokens, config at packages/config. Dev server confirmed at localhost:3000. All Phase 1 work needs to be committed and pushed (pending GitHub push).
+Stopped at: Plan 02-02 unified — cinematic hero shipped, responsive verified, Storybook stories done
+Next action: /paul:plan to plan Phase 2 next piece (content rails or remaining homepage sections)
+Resume file: .paul/phases/02-homepage-conversion/02-02-SUMMARY.md
 
 ---
 *STATE.md — Updated after every significant action*

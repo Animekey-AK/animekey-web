@@ -15,7 +15,7 @@ Phases: 1 of 8 complete
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
 | 1 | Monorepo Foundation | 3/3 | ✅ Complete | 2026-03-31 |
-| 2 | Homepage Conversion | TBD | Not started | - |
+| 2 | Homepage Conversion | TBD | Planning | - |
 | 3 | Browse & Discovery | TBD | Not started | - |
 | 4 | Video Player & DRM | TBD | Not started | - |
 | 5 | Auth & Profiles | TBD | Not started | - |
