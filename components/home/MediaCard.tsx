@@ -27,11 +27,35 @@ const imageClasses: Record<RailData["variant"], string> = {
   compact: "aspect-poster",
 };
 
+const accentPalettes = [
+  {
+    glow: "from-primary/22 via-primary/6 to-transparent",
+    panel: "bg-[linear-gradient(180deg,rgba(113,199,4,0.18),rgba(0,0,0,0))]",
+  },
+  {
+    glow: "from-emerald-400/18 via-cyan-400/6 to-transparent",
+    panel: "bg-[linear-gradient(180deg,rgba(16,185,129,0.16),rgba(0,0,0,0))]",
+  },
+  {
+    glow: "from-lime-300/14 via-yellow-200/6 to-transparent",
+    panel: "bg-[linear-gradient(180deg,rgba(190,242,100,0.16),rgba(0,0,0,0))]",
+  },
+];
+
+function getAccentPalette(seed: string) {
+  const index = Array.from(seed).reduce((sum, character) => sum + character.charCodeAt(0), 0) %
+    accentPalettes.length;
+
+  return accentPalettes[index];
+}
+
 export function MediaCard({
   item,
   variant,
   priority = false,
 }: MediaCardProps) {
+  const accent = getAccentPalette(item.id);
+
   return (
     <Link
       href={item.href}
@@ -43,10 +67,12 @@ export function MediaCard({
       <article className="space-y-3">
         <div
           className={cn(
-            "relative overflow-hidden rounded-[1.5rem] border border-border/30 bg-card shadow-[0_24px_60px_rgba(0,0,0,0.35)]",
+            "relative overflow-hidden rounded-[1.5rem] border border-border/30 bg-[linear-gradient(180deg,rgba(15,15,15,0.98),rgba(8,8,8,0.96))] shadow-[0_24px_60px_rgba(0,0,0,0.35)]",
             imageClasses[variant],
           )}
         >
+          <div className={cn("absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b", accent.glow)} />
+          <div className={cn("absolute inset-0", accent.panel)} />
           <Image
             src={item.media.src}
             alt={item.media.alt}
@@ -57,9 +83,9 @@ export function MediaCard({
                 ? "(max-width: 768px) 72vw, 20rem"
                 : "(max-width: 768px) 40vw, 11rem"
             }
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            className="object-cover opacity-28 blur-sm transition-transform duration-500 group-hover:scale-[1.04] group-hover:opacity-35"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/38 to-transparent" />
           {item.badge ? (
             <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-black/60 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white/80 backdrop-blur-md">
               {item.badge}
@@ -70,17 +96,41 @@ export function MediaCard({
               {item.eyebrow}
             </span>
           ) : null}
+
+          <div className="absolute inset-x-0 bottom-0 space-y-2 p-4">
+            <div className="flex items-center justify-between text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-foreground/52">
+              <span>AnimeKey pick</span>
+              <span>{variant === "landscape" ? "Now watching" : "Featured"}</span>
+            </div>
+            <h3 className="line-clamp-2 text-base font-bold leading-6 text-foreground">
+              {item.title}
+            </h3>
+            {item.description ? (
+              <p className="line-clamp-2 text-xs leading-5 text-foreground/62">
+                {item.description}
+              </p>
+            ) : (
+              <p className="text-xs leading-5 text-foreground/55">
+                {variant === "landscape"
+                  ? "Resume-worthy placement with a cleaner path back into playback."
+                  : "Curated to feel premium even before personalized catalog data lands."}
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className="space-y-1 px-1">
-          <h3 className="line-clamp-1 text-sm font-semibold text-foreground">
-            {item.title}
-          </h3>
-          {item.description ? (
-            <p className="line-clamp-2 text-xs text-muted-foreground">
-              {item.description}
+        <div className="flex items-center justify-between gap-3 px-1">
+          <div className="space-y-1">
+            <p className="line-clamp-1 text-sm font-semibold text-foreground/94">
+              {item.title}
             </p>
-          ) : null}
+            <p className="text-[0.68rem] font-medium uppercase tracking-[0.18em] text-foreground/45">
+              {item.badge ?? item.eyebrow ?? "Catalog entry"}
+            </p>
+          </div>
+          <span className="text-sm text-primary transition-transform duration-300 group-hover:translate-x-1">
+            →
+          </span>
         </div>
       </article>
     </Link>

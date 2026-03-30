@@ -31,7 +31,7 @@ export function ProfilePicker({ profiles, canAddMore }: ProfilePickerProps) {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {profiles.map((profile) => {
           const isLoading = isPending && selecting === profile.id;
           return (
@@ -40,10 +40,9 @@ export function ProfilePicker({ profiles, canAddMore }: ProfilePickerProps) {
               type="button"
               onClick={() => handleSelect(profile)}
               disabled={isPending}
-              className="group flex flex-col items-center gap-3 rounded-xl p-4 transition-colors hover:bg-accent disabled:pointer-events-none"
+              className="group flex flex-col items-center gap-4 rounded-[1.5rem] border border-white/8 bg-white/[0.02] p-4 transition-all hover:-translate-y-1 hover:border-primary/40 hover:bg-white/[0.04] disabled:pointer-events-none"
             >
-              {/* Avatar */}
-              <div className="relative h-20 w-20 overflow-hidden rounded-xl border-2 border-transparent ring-2 ring-transparent transition-all group-hover:border-primary group-hover:ring-primary/30">
+              <div className="relative h-24 w-24 overflow-hidden rounded-[1.3rem] border border-white/10 transition-all group-hover:border-primary/60 group-hover:shadow-[0_16px_40px_rgba(113,199,4,0.16)]">
                 {profile.avatar ? (
                   <Image
                     src={profile.avatar}
@@ -62,21 +61,18 @@ export function ProfilePicker({ profiles, canAddMore }: ProfilePickerProps) {
                   </div>
                 )}
 
-                {/* Kids badge */}
                 {profile.isKids && (
                   <span className="absolute bottom-0 left-0 right-0 bg-primary/90 py-0.5 text-center text-[10px] font-bold uppercase text-primary-foreground">
                     Kids
                   </span>
                 )}
 
-                {/* PIN lock icon */}
                 {profile.pinEnabled && (
                   <div className="absolute right-1 top-1 rounded-full bg-black/60 p-0.5">
                     <Image src="/images/profile/lockIcon.svg" alt="PIN locked" width={12} height={12} />
                   </div>
                 )}
 
-                {/* Loading spinner overlay */}
                 {isLoading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                     <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -91,13 +87,12 @@ export function ProfilePicker({ profiles, canAddMore }: ProfilePickerProps) {
           );
         })}
 
-        {/* Add profile tile */}
         {canAddMore && (
           <Link
             href="/account/profiles/new"
-            className="group flex flex-col items-center gap-3 rounded-xl p-4 transition-colors hover:bg-accent"
+            className="group flex flex-col items-center gap-4 rounded-[1.5rem] border border-dashed border-white/12 bg-white/[0.02] p-4 transition-all hover:-translate-y-1 hover:border-primary/40 hover:bg-white/[0.04]"
           >
-            <div className="flex h-20 w-20 items-center justify-center rounded-xl border-2 border-dashed border-border transition-colors group-hover:border-primary">
+            <div className="flex h-24 w-24 items-center justify-center rounded-[1.3rem] border border-dashed border-white/12 transition-colors group-hover:border-primary/60">
               <svg className="h-8 w-8 text-muted-foreground group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
@@ -109,7 +104,6 @@ export function ProfilePicker({ profiles, canAddMore }: ProfilePickerProps) {
         )}
       </div>
 
-      {/* Manage profiles */}
       <div className="mt-8 text-center">
         <Link
           href="/account/profiles"
@@ -119,7 +113,6 @@ export function ProfilePicker({ profiles, canAddMore }: ProfilePickerProps) {
         </Link>
       </div>
 
-      {/* PIN modal */}
       {pendingPin && (
         <ProfilePinModal
           profileId={pendingPin.id}

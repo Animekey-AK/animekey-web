@@ -8,7 +8,7 @@ import { routes } from "@/constants/routes";
 export function PaywallPrompt() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6 px-6 text-center">
-      <div className="rounded-full bg-primary/10 p-5">
+      <div className="rounded-full border border-primary/20 bg-primary/10 p-5">
         <svg
           className="h-10 w-10 text-primary"
           fill="none"
@@ -25,8 +25,10 @@ export function PaywallPrompt() {
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold">Start watching now</h2>
-        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+        <h2 className="text-3xl font-black tracking-tight text-foreground">
+          Start watching now
+        </h2>
+        <p className="mt-2 max-w-sm text-sm leading-7 text-muted-foreground">
           Create a free account or sign in to watch this content.
         </p>
       </div>
@@ -34,13 +36,13 @@ export function PaywallPrompt() {
       <div className="flex flex-col gap-3 sm:flex-row">
         <Link
           href={routes.register}
-          className="rounded-md bg-primary px-8 py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground transition-opacity hover:opacity-90"
+          className="rounded-full bg-primary px-8 py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-[0_20px_50px_rgba(113,199,4,0.24)] transition-opacity hover:opacity-90"
         >
           Create Account
         </Link>
         <Link
           href={routes.login}
-          className="rounded-md border border-input px-8 py-3 text-sm font-medium transition-colors hover:bg-accent"
+          className="rounded-full border border-white/10 px-8 py-3.5 text-sm font-medium transition-colors hover:bg-white/[0.05]"
         >
           Sign In
         </Link>

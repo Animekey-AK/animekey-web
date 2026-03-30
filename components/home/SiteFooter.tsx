@@ -30,14 +30,20 @@ const storeLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/40 bg-background">
-      <div className="mx-auto grid max-w-screen-2xl gap-10 px-4 py-10 md:grid-cols-[1.2fr_0.8fr] md:px-8">
+    <footer className="border-t border-white/5 bg-[linear-gradient(180deg,_rgba(5,5,5,0.96),_rgba(2,2,2,1))]">
+      <div className="mx-auto grid max-w-screen-2xl gap-10 px-4 py-12 md:grid-cols-[1.2fr_0.8fr] md:px-8">
         <div className="space-y-6">
-          <Image src="/images/logo.svg" alt="AnimeKey" width={128} height={28} />
+          <Image
+            src="/images/logo.svg"
+            alt="AnimeKey"
+            width={128}
+            height={28}
+            className="h-auto w-32"
+          />
           <p className="max-w-xl text-sm leading-7 text-muted-foreground">
-            AnimeKey is being rebuilt around cleaner discovery, better visual
-            hierarchy, and a homepage that earns conversion instead of forcing
-            it.
+            AnimeKey is being rebuilt around cleaner discovery, stronger
+            editorial curation, and a streaming experience that feels premium
+            before the subscription pitch ever shows up.
           </p>
           <div className="flex flex-wrap gap-3">
             {socialLinks.map((link) => (
@@ -48,7 +54,13 @@ export function SiteFooter() {
                 rel="noreferrer"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-border/30 bg-card transition-colors hover:border-primary/50"
               >
-                <Image src={link.icon} alt={link.label} width={18} height={18} />
+                <Image
+                  src={link.icon}
+                  alt={link.label}
+                  width={18}
+                  height={18}
+                  className="h-auto w-[18px]"
+                />
               </Link>
             ))}
           </div>

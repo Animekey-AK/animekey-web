@@ -17,8 +17,8 @@ import type {
 const ready: SectionStatus = "ready";
 
 const heroMedia: MediaItem = {
-  src: "/images/home/watchnowcard.svg",
-  alt: "Featured playback card preview",
+  src: "/images/login/login-right.svg",
+  alt: "Featured AnimeKey hero artwork",
 };
 
 const heroCtas: HeroData["ctas"] = [

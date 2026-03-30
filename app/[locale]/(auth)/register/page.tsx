@@ -1,48 +1,44 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { RegisterForm } from "@/components/auth/RegisterForm";
+import {
+  AuthInlineLink,
+  AuthShowcaseShell,
+} from "@/components/auth/AuthShowcaseShell";
 import { routes } from "@/constants/routes";
 
 export const metadata: Metadata = { title: "Create Account" };
 
 export default function RegisterPage() {
   return (
-    <div className="flex min-h-screen">
-      {/* ── Left panel: illustration ───────────────────────────────────── */}
-      <div className="relative hidden md:block md:w-1/2">
-        <Image
-          src="/images/signup/signupLeft.svg"
-          alt=""
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-l from-background via-transparent to-transparent" />
-      </div>
-
-      {/* ── Right panel: form ──────────────────────────────────────────── */}
-      <div className="flex w-full flex-col justify-center px-6 py-12 md:w-1/2 lg:px-16 xl:px-24">
-        <div className="mb-8">
-          <Link href={routes.home}>
-            <Image src="/images/logo.svg" alt="AnimeKey" width={140} height={40} priority />
-          </Link>
-        </div>
-
-        <h1 className="mb-2 text-3xl font-bold">Welcome to AnimeKey</h1>
-        <p className="mb-8 text-sm text-muted-foreground">
-          Create your account to start streaming.
-        </p>
-
-        <RegisterForm />
-
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+    <AuthShowcaseShell
+      title="Create an account that feels like your own anime hub."
+      description="Build your profile stack, save favorites, and unlock the cleanest way to browse what to watch next."
+      artworkSrc="/images/signup/signupLeft.svg"
+      artworkAlt="AnimeKey signup screen artwork"
+      artworkPosition="left"
+      eyebrow="Join AnimeKey"
+      highlights={[
+        { label: "Profiles", value: "Up to five per household" },
+        { label: "Premium", value: "Unlock more titles when ready" },
+        { label: "Flow", value: "Fast signup, watch in minutes" },
+      ]}
+      footer={
+        <p className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link href={routes.login} className="font-semibold text-primary hover:underline">
-            Login here
-          </Link>
+          <AuthInlineLink href={routes.login}>Login here</AuthInlineLink>
+        </p>
+      }
+    >
+      <div className="mb-8 space-y-3">
+        <h2 className="text-4xl font-black tracking-tight text-foreground">
+          Welcome to AnimeKey
+        </h2>
+        <p className="max-w-lg text-sm leading-7 text-foreground/68">
+          Create your account to start streaming with personalized profiles and
+          cleaner discovery.
         </p>
       </div>
-    </div>
+        <RegisterForm />
+    </AuthShowcaseShell>
   );
 }
