@@ -69,6 +69,17 @@ public/
     ar/
 ```
 
+## Git Worktrees
+
+When using git worktrees for feature development, **always remove the worktree and delete its branch when the work is done** (PR merged, changes committed to develop, or work abandoned):
+
+```bash
+git worktree remove --force /path/to/worktree
+git branch -D branch-name
+```
+
+Never leave worktrees checked into subdirectories of the main repo — they appear as untracked directories and pollute `git status`.
+
 ## Linear
 
 Project: **Platform Rebuild v2**

@@ -1,0 +1,6 @@
+{
+  "name": "@animekey/mobile",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Animekey mobile app — Expo bare workflow (iOS + Android)"
+}

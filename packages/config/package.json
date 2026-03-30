@@ -1,0 +1,6 @@
+{
+  "name": "@animekey/config",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Animekey shared TypeScript and ESLint config"
+}
