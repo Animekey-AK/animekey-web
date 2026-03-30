@@ -188,6 +188,52 @@ Boundary rules:
 - `MediaCard` owns the card presentation
 - specialized sections like `PromoBanner` and `TopRankedShowcase` can have unique visuals without breaking the shared homepage data model
 
+Composition rule:
+
+- preserve the approved editorial order by default, but represent the page as a typed section list rather than hardcoding every section inline
+- use a discriminated union such as `hero`, `proof`, `rail`, `promo`, `topRanked`, and `appDownload`
+- do not turn this first slice into a CMS-style renderer; keep dedicated components and a small typed composition layer only
+
+## Core Content Contracts
+
+The homepage needs explicit shared content types before implementation. The most important one is the media entity used by the hero, rails, and ranked sections.
+
+Minimum media contract:
+
+```ts
+export interface MediaItem {
+  id: string
+  title: string
+  href: string
+  type: "movie" | "series"
+  posterSrc: string
+  backdropSrc?: string
+  logoSrc?: string
+  synopsis?: string
+  ratingLabel?: string
+  maturityLabel?: string
+  year?: number
+  episodeCountLabel?: string
+  genres?: string[]
+  isPremium?: boolean
+  isDubbed?: boolean
+}
+```
+
+Supporting contracts should be defined for:
+
+- `HeroData`
+- `ProofPoint`
+- `RailData`
+- `PromoData`
+- `TopRankedData`
+- `AppDownloadData`
+
+Contract rule:
+
+- every navigable entity must carry its own explicit `href`
+- section components should depend on these shared contracts rather than ad hoc local prop shapes
+
 ## Data Model And Rendering Strategy
 
 The first homepage version should use local typed mock data rather than fetched API data.
@@ -201,6 +247,18 @@ Required homepage data groups:
 - optional `topRanked`
 - optional `appDownload`
 
+Preferred page composition shape:
+
+```ts
+type HomeSection =
+  | { type: "hero"; data: HeroData }
+  | { type: "proof"; data: ProofPoint[] }
+  | { type: "rail"; data: RailData }
+  | { type: "promo"; data: PromoData }
+  | { type: "topRanked"; data: TopRankedData }
+  | { type: "appDownload"; data: AppDownloadData }
+```
+
 Rendering strategy:
 
 - keep homepage composition server-rendered by default
@@ -213,6 +271,51 @@ CTA strategy:
 - browsing and content exploration should be primary
 - sign-up and subscription should stay visible but secondary
 - the page should gently increase purchase intent as users scroll rather than demand commitment immediately
+
+Visitor-state rules:
+
+- the default homepage should be optimized for logged-out visitors who are evaluating the catalog
+- logged-in visitors can de-emphasize sign-up messaging and surface resume or continue-browsing content later when personalization exists
+- premium or gated titles should be visually labeled without blocking browsing interactions
+- conversion pressure should increase only after the visitor has seen catalog proof, not in the first interaction zone
+
+## Section State Model
+
+The homepage must define section states before API integration so the UI does not assume perfect data.
+
+Minimum state model:
+
+```ts
+type SectionStatus = "loading" | "ready" | "empty" | "error"
+```
+
+Required behaviors:
+
+- `HeroSpotlight` needs `loading`, `ready`, and `error` fallbacks
+- `ContentRail` needs `loading`, `ready`, `empty`, and `error` states
+- `PromoBanner` and `AppDownloadBand` may be omitted entirely if data is unavailable
+- the page must tolerate partial data, for example rendering available rails even if one rail fails
+- loading states should use layout-preserving skeletons instead of collapsing the page
+- empty states should not show generic error language; they should either omit the section or present a lightweight fallback message
+
+The first mock-data version can keep these states simple, but the prop contracts and component structure must leave room for them.
+
+## Routing And Navigation Behavior
+
+Homepage CTAs need explicit destinations so the UI supports product flow and future SEO work.
+
+Routing rules for this slice:
+
+- header browse navigation should link to stable browse destinations such as `/[locale]/movies` and `/[locale]/series`
+- hero primary CTA should go to a browse destination or featured-title destination, depending on the selected campaign content
+- hero secondary CTA may point to registration, subscription, or plan-explainer flows
+- media cards must link to explicit title destinations carried in data via `href`
+- genre or category affordances can use query-based browse URLs such as `/[locale]/series?genre=action`
+
+Implementation guardrail:
+
+- homepage components should consume `href` values from data instead of hardcoding route construction logic into section components
+- the first implementation can align title destinations with the current planned route structure, including watch/detail destinations under `/[locale]/watch/[id]`
 
 ## Visual Principles
 
@@ -229,6 +332,42 @@ Motion guidance:
 - use subtle reveal or hover motion only where it helps hierarchy
 - avoid constant motion, autoplay noise, or decorative animation overload
 
+## Performance Strategy
+
+This homepage is media-heavy and must be designed with loading performance in mind.
+
+Required performance decisions:
+
+- use `next/image` for homepage imagery unless a specific asset format makes it impractical
+- mark the hero art and any truly above-the-fold supporting images as high priority
+- lazy-load lower-page rail imagery by default
+- prefer stable aspect-ratio boxes and skeletons to prevent layout shift
+- keep first render server-first and lightweight; interactive carousel logic should hydrate only where necessary
+- the mock-data version does not need network caching, but the component boundaries must be compatible with future server-side fetching and cache/revalidation policies
+- image-heavy sections should avoid eagerly rendering or animating off-screen content when not needed
+
+The performance goal is to protect first content visibility and reduce bounce risk on slower mobile connections.
+
+## Analytics And Tracking
+
+Because the homepage is meant to support conversion, instrumentation must be part of the design rather than an afterthought.
+
+The first implementation should leave clear hooks for at least:
+
+- hero primary CTA clicks
+- hero secondary CTA clicks
+- rail item clicks
+- `See all` clicks
+- promo banner clicks
+- top-ranked item clicks
+- app-download clicks
+- meaningful scroll-depth milestones
+
+Tracking rule:
+
+- analytics wiring does not need to ship in the first visual slice if there is no existing event layer yet
+- component APIs and naming should make future instrumentation straightforward and consistent
+
 ## Accessibility And Responsiveness
 
 The homepage must maintain:
@@ -241,13 +380,25 @@ The homepage must maintain:
 
 The first content rail should remain discoverable quickly on common laptop and mobile viewport sizes.
 
+Mobile-first constraints:
+
+- hero height on mobile should be capped so the first browsing section is discoverable without excessive scrolling
+- rails should support horizontal touch scrolling cleanly on mobile
+- touch targets for controls and CTAs should remain thumb-friendly
+- rail behavior should prefer predictable touch interaction over decorative motion
+- sticky header height should stay compact on smaller screens
+
 ## Testing And Quality Expectations
 
 This homepage slice should be validated through:
 
 - strict TypeScript typing for all homepage section contracts
+- explicit checks for section state handling, especially loading and empty rails
 - visual checks for desktop and mobile layouts
+- performance sanity checks for above-the-fold media loading and layout stability
 - checks that repeated rails do not collapse into identical-looking blocks
+- route and CTA verification so homepage actions lead to the intended destinations
+- event-hook placement review so future analytics can be added without reworking component boundaries
 - accessibility sanity checks for semantics, focus, and CTA clarity
 - review of section isolation so the component system stays reusable for future homepage and browse work
 
