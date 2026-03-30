@@ -7,5 +7,7 @@ export const routes = {
   login: "/login",
   register: "/register",
   forgotPassword: "/forgot-password",
+  resetPassword: "/reset-password",
+  selectProfile: "/select-profile",
   plans: "/plans",
 } as const;

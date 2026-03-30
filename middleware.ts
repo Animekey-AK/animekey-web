@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
 // ─── Protected route prefixes ─────────────────────────────────────────────────
-const PROTECTED = ["/account", "/watch", "/plans"];
+const PROTECTED = ["/account", "/watch", "/plans", "/select-profile"];
 const AUTH_ONLY = ["/login", "/register", "/forgot-password"]; // redirect if already authed
 
 export default auth((req) => {
