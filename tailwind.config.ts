@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  // shadcn/ui requires class-based dark mode
   darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,9 +9,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // ─── Brand tokens (swap with Figma export) ───────────────────────────
+      // ─── Design tokens from Figma (phone-site-animekey, node 1498-5404) ──
       colors: {
-        // Semantic aliases → CSS vars (shadcn/ui compatible)
         background: "var(--background)",
         foreground: "var(--foreground)",
         card: {
@@ -47,57 +45,66 @@ const config: Config = {
         input: "var(--input)",
         ring: "var(--ring)",
 
-        // ─── AnimeKey brand palette ───────────────────────────────────────
-        // Replace hex values with your Figma token exports
+        // ─── AnimeKey brand palette — source: Figma ───────────────────────
         brand: {
-          50: "#fef2f2",
-          100: "#fee2e2",
-          200: "#fecaca",
-          300: "#fca5a5",
-          400: "#f87171",
-          500: "#ef4444", // primary brand red
-          600: "#dc2626",
-          700: "#b91c1c",
-          800: "#991b1b",
-          900: "#7f1d1d",
-          950: "#450a0a",
+          // Lime green — primary accent extracted from Figma (#71C704)
+          DEFAULT: "#71C704",
+          50:  "#f4fce3",
+          100: "#e5f6c1",
+          200: "#cbec86",
+          300: "#aedf44",
+          400: "#92cc1c",
+          500: "#71C704", // ← Figma primary
+          600: "#5a9f03",
+          700: "#437802",
+          800: "#2e5202",
+          900: "#1a2e01",
         },
+
+        // ─── Surface palette — background #070707 from Figma ─────────────
         surface: {
-          DEFAULT: "#0f0f13", // app shell bg
-          raised: "#16161d", // cards, modals
-          overlay: "#1e1e28", // dropdowns, tooltips
+          DEFAULT: "#070707", // ← Figma frame background
+          raised:  "#1a1a1a", // card lift
+          overlay: "#212121", // modals, dropdowns
         },
       },
 
-      // ─── Typography ───────────────────────────────────────────────────────
+      // ─── Typography — fonts extracted from Figma ───────────────────────
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "monospace"],
+        sans:        ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],
+        display:     ["var(--font-display)", "Anton", "sans-serif"],
+        description: ["var(--font-description)", "Montserrat", "sans-serif"],
+        mono:        ["var(--font-mono)", "monospace"],
       },
 
-      // ─── Spacing / Radii ──────────────────────────────────────────────────
+      // ─── Type scale — mapped from Figma sizes (mobile → web) ───────────
+      fontSize: {
+        "hero":    ["6rem",  { lineHeight: "1.1", fontWeight: "400" }],  // 96px Anton
+        "display": ["2.25rem", { lineHeight: "1.1", fontWeight: "700" }], // 36px section
+        "title-lg":["2rem",  { lineHeight: "1.1", fontWeight: "700" }],  // 32px card
+        "title":   ["1.875rem", { lineHeight: "1.21", fontWeight: "700" }], // 30px
+        "title-sm":["1.375rem", { lineHeight: "1.1", fontWeight: "700" }],  // 22px
+        "label":   ["1rem",  { lineHeight: "1.45", fontWeight: "500" }],
+      },
+
       borderRadius: {
         DEFAULT: "var(--radius)",
-        sm: "calc(var(--radius) - 4px)",
-        md: "calc(var(--radius) - 2px)",
-        lg: "var(--radius)",
-        xl: "calc(var(--radius) + 4px)",
+        sm:  "calc(var(--radius) - 4px)",
+        md:  "calc(var(--radius) - 2px)",
+        lg:  "var(--radius)",
+        xl:  "calc(var(--radius) + 4px)",
         "2xl": "calc(var(--radius) + 8px)",
       },
 
-      // ─── Animation ────────────────────────────────────────────────────────
       keyframes: {
-        "fade-in": {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
-        },
+        "fade-in":  { from: { opacity: "0" }, to: { opacity: "1" } },
         "slide-up": {
           from: { transform: "translateY(8px)", opacity: "0" },
-          to: { transform: "translateY(0)", opacity: "1" },
+          to:   { transform: "translateY(0)",   opacity: "1" },
         },
       },
       animation: {
-        "fade-in": "fade-in 0.2s ease-out",
+        "fade-in":  "fade-in 0.2s ease-out",
         "slide-up": "slide-up 0.25s ease-out",
       },
     },
