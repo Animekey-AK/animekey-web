@@ -1,101 +1,115 @@
-export type HomepageCtaVariant = "primary" | "secondary" | "tertiary";
+export type SectionStatus = "active" | "hidden" | "disabled";
 
-export interface HomepageLink {
-  label: string;
-  href: string;
-}
+export type RailVariant = "carousel" | "stacked" | "ranked";
 
-export interface HomepageCta extends HomepageLink {
-  variant: HomepageCtaVariant;
-  iconSrc?: string;
-  iconAlt?: string;
-}
-
-export interface HomepageMediaAsset {
+export interface MediaItem {
   src: string;
   alt: string;
   width?: number;
   height?: number;
 }
 
-export interface HomepageHeroStat {
-  label: string;
-  value: string;
-  detail?: string;
-}
-
-export interface HomepageHeroContent {
+export interface HeroData {
+  status: SectionStatus;
   eyebrow: string;
   title: string;
   description: string;
-  primaryCta: HomepageCta;
-  secondaryCta: HomepageCta;
-  artwork: HomepageMediaAsset;
-  stats: ReadonlyArray<HomepageHeroStat>;
+  actions: ReadonlyArray<{
+    label: string;
+    href: string;
+  }>;
+  media: MediaItem;
+  stats: ReadonlyArray<{
+    label: string;
+    value: string;
+    detail?: string;
+  }>;
 }
 
-export interface HomepageProofPoint {
+export interface ProofPoint {
   title: string;
   description: string;
-  iconSrc?: string;
-  iconAlt?: string;
+  media: MediaItem;
 }
 
-export interface HomepageRailItem {
-  id: string;
-  title: string;
-  href: string;
-  posterSrc: string;
-  posterAlt: string;
-  eyebrow?: string;
-  description?: string;
-  badge?: string;
-}
-
-export interface HomepageRail {
+export interface RailData {
+  status: SectionStatus;
+  variant: RailVariant;
   id: string;
   title: string;
   description?: string;
   href: string;
-  items: ReadonlyArray<HomepageRailItem>;
+  items: ReadonlyArray<{
+    id: string;
+    title: string;
+    href: string;
+    media: MediaItem;
+    badge?: string;
+    description?: string;
+    meta?: string;
+  }>;
 }
 
-export interface HomepagePromoBanner {
+export interface PromoData {
+  status: SectionStatus;
   badge?: string;
   title: string;
   description: string;
-  cta: HomepageCta;
-  artwork: HomepageMediaAsset;
+  cta: {
+    label: string;
+    href: string;
+  };
+  media: MediaItem;
 }
 
-export interface HomepageTopRankedItem {
-  rank: number;
+export interface TopRankedData {
+  status: SectionStatus;
   title: string;
-  href: string;
-  posterSrc: string;
-  posterAlt: string;
-  label?: string;
+  description?: string;
+  items: ReadonlyArray<{
+    rank: number;
+    title: string;
+    href: string;
+    media: MediaItem;
+    label?: string;
+  }>;
 }
 
-export interface HomepageAppDownloadStore {
-  label: string;
-  href: string;
-  iconSrc: string;
-  iconAlt: string;
-}
-
-export interface HomepageAppDownload {
+export interface AppDownloadData {
+  status: SectionStatus;
   title: string;
   description: string;
-  stores: ReadonlyArray<HomepageAppDownloadStore>;
-  artwork?: HomepageMediaAsset;
+  stores: ReadonlyArray<{
+    label: string;
+    href: string;
+    media: MediaItem;
+  }>;
+  media?: MediaItem;
 }
 
-export interface HomepageContentData {
-  hero: HomepageHeroContent;
-  proofPoints: ReadonlyArray<HomepageProofPoint>;
-  rails: ReadonlyArray<HomepageRail>;
-  promo: HomepagePromoBanner;
-  topRanked: ReadonlyArray<HomepageTopRankedItem>;
-  appDownload: HomepageAppDownload;
-}
+export type HomeSection =
+  | {
+      key: "hero";
+      status: SectionStatus;
+    }
+  | {
+      key: "proofStrip";
+      status: SectionStatus;
+    }
+  | {
+      key: "rails";
+      status: SectionStatus;
+      variant: RailVariant;
+    }
+  | {
+      key: "promoBanner";
+      status: SectionStatus;
+    }
+  | {
+      key: "topRanked";
+      status: SectionStatus;
+    }
+  | {
+      key: "appDownload";
+      status: SectionStatus;
+    };
