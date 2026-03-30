@@ -2,35 +2,40 @@ import { routes } from "@/constants/routes";
 
 import type {
   AppDownloadData,
+  HomepageData,
   HeroData,
   HomeSection,
   MediaItem,
   ProofPoint,
+  ProofStripData,
   PromoData,
   RailData,
   SectionStatus,
   TopRankedData,
 } from "./types";
 
-const active: SectionStatus = "active";
+const ready: SectionStatus = "ready";
 
 const heroMedia: MediaItem = {
   src: "/images/home/watchnowcard.svg",
   alt: "Featured playback card preview",
 };
 
-const heroActions: HeroData["actions"] = [
+const heroCtas: HeroData["ctas"] = [
   {
     label: "Start watching",
     href: routes.register,
+    intent: "primary",
   },
   {
     label: "Browse the catalog",
     href: routes.movies,
+    intent: "secondary",
   },
   {
     label: "See plans",
     href: routes.plans,
+    intent: "tertiary",
   },
 ];
 
@@ -73,10 +78,15 @@ const proofPoints: ReadonlyArray<ProofPoint> = [
   },
 ];
 
+const proofStrip: ProofStripData = {
+  status: ready,
+  items: proofPoints,
+};
+
 const rails: ReadonlyArray<RailData> = [
   {
-    status: active,
-    variant: "carousel",
+    status: ready,
+    variant: "poster",
     id: "trending-now",
     title: "Trending now",
     description: "The titles people are most likely to open first.",
@@ -115,8 +125,8 @@ const rails: ReadonlyArray<RailData> = [
     ],
   },
   {
-    status: active,
-    variant: "carousel",
+    status: ready,
+    variant: "landscape",
     id: "continue-watching",
     title: "Continue watching",
     description: "A second rail for the watch-later and resume states.",
@@ -130,7 +140,7 @@ const rails: ReadonlyArray<RailData> = [
           src: "/images/promo.png",
           alt: "Demon Slayer poster",
         },
-        meta: "Episode 8",
+        eyebrow: "Episode 8",
       },
       {
         id: "my-hero-academia",
@@ -140,7 +150,7 @@ const rails: ReadonlyArray<RailData> = [
           src: "/images/card.png",
           alt: "My Hero Academia poster",
         },
-        meta: "Episode 3",
+        eyebrow: "Episode 3",
       },
       {
         id: "one-piece",
@@ -150,13 +160,13 @@ const rails: ReadonlyArray<RailData> = [
           src: "/images/placeholder1.png",
           alt: "One Piece poster",
         },
-        meta: "Episode 1120",
+        eyebrow: "Episode 1120",
       },
     ],
   },
   {
-    status: active,
-    variant: "stacked",
+    status: ready,
+    variant: "compact",
     id: "staff-picks",
     title: "Staff picks",
     description: "A small editorial rail for launch-day recommendations.",
@@ -197,14 +207,20 @@ const rails: ReadonlyArray<RailData> = [
 ];
 
 const promoBanner: PromoData = {
-  status: active,
+  status: ready,
   badge: "Limited launch promo",
   title: "Upgrade paths stay visible without breaking the flow.",
   description:
     "The promo slot is reserved for a single high-value message, like premium access or a seasonal offer.",
-  cta: {
+  primaryCta: {
     label: "See plans",
     href: routes.plans,
+    intent: "primary",
+  },
+  secondaryCta: {
+    label: "Browse the catalog",
+    href: routes.movies,
+    intent: "secondary",
   },
   media: {
     src: "/images/home/premium.svg",
@@ -213,7 +229,7 @@ const promoBanner: PromoData = {
 };
 
 const topRanked: TopRankedData = {
-  status: active,
+  status: ready,
   title: "Top ranked",
   description: "The five most visible titles in the launch plan.",
   items: [
@@ -271,7 +287,7 @@ const topRanked: TopRankedData = {
 };
 
 const appDownload: AppDownloadData = {
-  status: active,
+  status: ready,
   title: "Take AniKey with you on any screen.",
   description:
     "A simple download block that can later point to the real mobile app stores without changing the homepage contract.",
@@ -299,14 +315,14 @@ const appDownload: AppDownloadData = {
   },
 };
 
-export const homepageData = {
+export const homepageData: HomepageData = {
   hero: {
-    status: active,
+    status: ready,
     eyebrow: "ANIKEY HOME",
     title: "Watch anime, movies, and series with one smooth home screen.",
     description:
       "A compact homepage built for discovery: featured picks, ranked titles, and quick paths into the catalog.",
-    actions: heroActions,
+    ctas: heroCtas,
     media: heroMedia,
     stats: [
       {
@@ -326,31 +342,18 @@ export const homepageData = {
       },
     ],
   },
-  proofStrip: {
-    status: active,
-    items: proofPoints,
-  },
+  proofStrip,
   rails,
   promoBanner,
   topRanked,
   appDownload,
-} satisfies {
-  hero: HeroData;
-  proofStrip: {
-    status: SectionStatus;
-    items: ReadonlyArray<ProofPoint>;
-  };
-  rails: ReadonlyArray<RailData>;
-  promoBanner: PromoData;
-  topRanked: TopRankedData;
-  appDownload: AppDownloadData;
 };
 
-export const homeSections: ReadonlyArray<HomeSection> = [
-  { key: "hero", status: active },
-  { key: "proofStrip", status: active },
-  { key: "rails", status: active, variant: "carousel" },
-  { key: "promoBanner", status: active },
-  { key: "topRanked", status: active },
-  { key: "appDownload", status: active },
+export const homeSections: HomeSection[] = [
+  { type: "hero", data: homepageData.hero },
+  { type: "proofStrip", data: homepageData.proofStrip },
+  { type: "rails", data: homepageData.rails },
+  { type: "promoBanner", data: homepageData.promoBanner },
+  { type: "topRanked", data: homepageData.topRanked },
+  { type: "appDownload", data: homepageData.appDownload },
 ];

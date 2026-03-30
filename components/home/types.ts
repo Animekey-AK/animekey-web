@@ -1,6 +1,8 @@
-export type SectionStatus = "active" | "hidden" | "disabled";
+export type SectionStatus = "loading" | "ready" | "empty" | "error";
 
-export type RailVariant = "carousel" | "stacked" | "ranked";
+export type RailVariant = "poster" | "landscape" | "ranked" | "compact";
+
+export type CallToActionIntent = "primary" | "secondary" | "tertiary";
 
 export interface MediaItem {
   src: string;
@@ -9,15 +11,18 @@ export interface MediaItem {
   height?: number;
 }
 
+export interface CallToAction {
+  label: string;
+  href: string;
+  intent: CallToActionIntent;
+}
+
 export interface HeroData {
   status: SectionStatus;
   eyebrow: string;
   title: string;
   description: string;
-  actions: ReadonlyArray<{
-    label: string;
-    href: string;
-  }>;
+  ctas: ReadonlyArray<CallToAction>;
   media: MediaItem;
   stats: ReadonlyArray<{
     label: string;
@@ -46,7 +51,7 @@ export interface RailData {
     media: MediaItem;
     badge?: string;
     description?: string;
-    meta?: string;
+    eyebrow?: string;
   }>;
 }
 
@@ -55,10 +60,8 @@ export interface PromoData {
   badge?: string;
   title: string;
   description: string;
-  cta: {
-    label: string;
-    href: string;
-  };
+  primaryCta: CallToAction;
+  secondaryCta?: CallToAction;
   media: MediaItem;
 }
 
@@ -87,29 +90,42 @@ export interface AppDownloadData {
   media?: MediaItem;
 }
 
+export interface ProofStripData {
+  status: SectionStatus;
+  items: ReadonlyArray<ProofPoint>;
+}
+
+export interface HomepageData {
+  hero: HeroData;
+  proofStrip: ProofStripData;
+  rails: ReadonlyArray<RailData>;
+  promoBanner: PromoData;
+  topRanked: TopRankedData;
+  appDownload: AppDownloadData;
+}
+
 export type HomeSection =
   | {
-      key: "hero";
-      status: SectionStatus;
+      type: "hero";
+      data: HeroData;
     }
   | {
-      key: "proofStrip";
-      status: SectionStatus;
+      type: "proofStrip";
+      data: ProofStripData;
     }
   | {
-      key: "rails";
-      status: SectionStatus;
-      variant: RailVariant;
+      type: "rails";
+      data: ReadonlyArray<RailData>;
     }
   | {
-      key: "promoBanner";
-      status: SectionStatus;
+      type: "promoBanner";
+      data: PromoData;
     }
   | {
-      key: "topRanked";
-      status: SectionStatus;
+      type: "topRanked";
+      data: TopRankedData;
     }
   | {
-      key: "appDownload";
-      status: SectionStatus;
+      type: "appDownload";
+      data: AppDownloadData;
     };
