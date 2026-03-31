@@ -5,15 +5,15 @@
 See: .paul/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Anime fans can watch their favourite shows ad-free, on any device, anytime.
-**Current focus:** v1 Web Platform — Phase 3: Browse & Discovery (03-02 complete)
+**Current focus:** v1 Web Platform — Phase 4: Video Player & DRM
 
 ## Current Position
 
 Milestone: v1 — Web Platform (v1.0.0)
 Phase: 3 of 8 (Browse & Discovery) — In progress
-Plan: 03-02 complete (2 of 3 plans)
-Status: 03-02 shipped — show detail page, episode list, related shows carousel
-Last activity: 2026-03-31 — 03-02 committed to feature/ANI-browse-discovery-03-01
+Plan: Phase 3 complete (3/3 plans)
+Status: Phase 3 shipped — PR #23 raised (feature/ANI-browse-discovery-03-01 → develop)
+Last activity: 2026-03-31 — PR #23 updated, Phase 4 next
 
 Notes:
 - Phase 2 shipped: cinematic hero, genre chips, friction-killer, proof strip, promo + countdown, top-ranked, app download, footer CTA
@@ -24,15 +24,16 @@ Notes:
 - PR #22 (feature/ANI-114-homepage-hero-rebuild → develop) updated — ready to merge before Phase 3
 
 Progress:
-- Milestone: [█████░░░░░] 50%
-- Phase 3: [██████░░░░] 67% (2/3 plans complete)
+- Milestone: [████████░░] 75%
+- Phase 3: [██████████] 100% (3/3 plans complete — DONE)
+- Phase 4: [░░░░░░░░░░] 0% (next)
 
 ## Loop Position
 
 ```
 Phase 2: PLAN ✓ → APPLY ✓ → UNIFY ✓  [complete]
-Phase 3: PLAN ✓ → APPLY ✓ → UNIFY ✓  [03-01 complete]
-         PLAN ✓ → APPLY ✓ → UNIFY ✓  [03-02 complete, 03-03 next]
+Phase 3: PLAN ✓ → APPLY ✓ → UNIFY ✓  [complete — all 3 plans done, PR #23]
+Phase 4: PLAN → APPLY → UNIFY         [next]
 ```
 
 ## Accumulated Context
@@ -69,8 +70,8 @@ None active.
 ## Session Continuity
 
 Last session: 2026-03-31
-Stopped at: Phase 3 plan 03-02 complete — show detail, episode list, related shows
-Next action: /paul:plan for 03-03 (Trending / New & Hot rails)
+Stopped at: Phase 3 complete — all 3 plans done, PR #23 updated
+Next action: /paul:plan 4 — Video Player & DRM (Phase 4, plan 04-01)
 Resume file: .paul/ROADMAP.md
 
 ---
