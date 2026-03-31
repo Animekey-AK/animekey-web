@@ -10,26 +10,27 @@ See: .paul/PROJECT.md (updated 2026-03-31)
 ## Current Position
 
 Milestone: v1 — Web Platform (v1.0.0)
-Phase: 2 of 8 (Homepage Conversion) — In Progress (1 plan complete, more plans may follow)
-Plan: 02-02 complete
-Status: Loop closed — ready for next PLAN
-Last activity: 2026-03-31 — Cinematic hero rebuild shipped; responsive fix verified at 390/768/1440px
+Phase: 2 of 8 (Homepage Conversion) — In Progress (core sections complete, 2 items deferred)
+Plan: 02-03 complete
+Status: Loop closed — ready for next PLAN or phase decision
+Last activity: 2026-03-31 — GenreChips + FrictionKiller shipped; homepage core conversion complete
 
 Notes:
 - 02-01-PLAN.md was written against the wrong design (card-based hero). ABORTED, all changes reverted.
-- 02-02-PLAN.md executed and unified: HeroSpotlight cinematic rewrite, HomeHeader, HeroPreviewModal.
-- Storybook stories co-located for HeroSpotlight + HomeHeader.
+- 02-02-PLAN.md: HeroSpotlight cinematic rewrite, HomeHeader, Storybook stories.
+- 02-03-PLAN.md: GenreChips + FrictionKiller conversion sections.
 - Homepage layout contract: main gets pt-16, hero wrapper gets -mt-16 for full-bleed behind fixed header.
+- Remaining Phase 2 scope: promo countdown timer (needs "use client"), footer CTA.
 
 Progress:
-- Milestone: [██░░░░░░░░] 22%
-- Phase 2: [████░░░░░░] 40%
+- Milestone: [██░░░░░░░░] 25%
+- Phase 2: [██████░░░░] 60%
 
 ## Loop Position
 
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Loop 02-02 complete — ready for next PLAN]
+  ✓        ✓        ✓     [Loop 02-03 complete — ready for next PLAN]
 ```
 
 ## Accumulated Context
@@ -63,9 +64,9 @@ None active.
 ## Session Continuity
 
 Last session: 2026-03-31
-Stopped at: Plan 02-02 unified — cinematic hero shipped, responsive verified, Storybook stories done
-Next action: /paul:plan to plan Phase 2 next piece (content rails or remaining homepage sections)
-Resume file: .paul/phases/02-homepage-conversion/02-02-SUMMARY.md
+Stopped at: Plan 02-03 unified — genre chips + friction-killer shipped
+Next action: Decide — continue Phase 2 (promo countdown + footer CTA) or wrap Phase 2 and merge PR
+Resume file: .paul/phases/02-homepage-conversion/02-03-SUMMARY.md
 
 ---
 *STATE.md — Updated after every significant action*
