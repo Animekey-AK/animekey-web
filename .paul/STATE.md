@@ -11,9 +11,9 @@ See: .paul/PROJECT.md (updated 2026-03-31)
 
 Milestone: v1 — Web Platform (v1.0.0)
 Phase: 3 of 8 (Browse & Discovery) — In progress
-Plan: Phase 4 04-01 complete (1/3 plans)
-Status: 04-01 shipped — hls.js player with custom controls, WatchPageClient
-Last activity: 2026-03-31 — 04-01 committed to feature/ANI-video-player-04
+Plan: Phase 4 04-02 complete (2/3 plans)
+Status: 04-02 shipped — episode selection, sub/dub toggle, resume playback
+Last activity: 2026-03-31 — 04-02 committed to feature/ANI-video-player-04
 
 Notes:
 - Phase 2 shipped: cinematic hero, genre chips, friction-killer, proof strip, promo + countdown, top-ranked, app download, footer CTA
@@ -26,14 +26,15 @@ Notes:
 Progress:
 - Milestone: [████████░░] 75%
 - Phase 3: [██████████] 100% (3/3 plans complete — DONE)
-- Phase 4: [███░░░░░░░] 33% (1/3 plans)
+- Phase 4: [██████░░░░] 67% (2/3 plans)
 
 ## Loop Position
 
 ```
 Phase 2: PLAN ✓ → APPLY ✓ → UNIFY ✓  [complete]
 Phase 3: PLAN ✓ → APPLY ✓ → UNIFY ✓  [complete — all 3 plans done, PR #23]
-Phase 4: PLAN ✓ → APPLY ✓ → UNIFY ✓  [04-01 complete, 04-02 next]
+Phase 4: PLAN ✓ → APPLY ✓ → UNIFY ✓  [04-01 complete]
+         PLAN ✓ → APPLY ✓ → UNIFY ✓  [04-02 complete, 04-03 next]
 ```
 
 ## Accumulated Context
@@ -70,8 +71,8 @@ None active.
 ## Session Continuity
 
 Last session: 2026-03-31
-Stopped at: Phase 4 plan 04-01 complete — hls.js player, custom controls, WatchPageClient
-Next action: Plan and execute 04-02 — episode selection + sub/dub toggle + resume playback
+Stopped at: Phase 4 plan 04-02 complete — episode selection, sub/dub toggle, resume
+Next action: Plan and execute 04-03 — geo-block enforcement + player error states + keyboard shortcut overlay
 Resume file: .paul/ROADMAP.md
 
 ---
