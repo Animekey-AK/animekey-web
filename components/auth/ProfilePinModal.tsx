@@ -47,14 +47,16 @@ export function ProfilePinModal({ profileId, profileName, onClose }: ProfilePinM
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-xl border border-border bg-card p-8 shadow-2xl">
-        <h2 className="mb-1 text-center text-xl font-bold">{profileName}</h2>
+      <div className="w-full max-w-sm rounded-[1.8rem] border border-white/10 bg-card/[0.92] p-8 shadow-[0_36px_120px_rgba(0,0,0,0.5)]">
+        <h2 className="mb-1 text-center text-2xl font-black tracking-tight text-foreground">
+          {profileName}
+        </h2>
         <p className="mb-6 text-center text-sm text-muted-foreground">
           Enter the 4-digit PIN to continue
         </p>
 
         {error && (
-          <p className="mb-4 rounded-md bg-destructive/10 px-4 py-2 text-center text-sm text-destructive">
+          <p className="mb-4 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-2 text-center text-sm text-destructive">
             {error}
           </p>
         )}
@@ -71,7 +73,7 @@ export function ProfilePinModal({ profileId, profileName, onClose }: ProfilePinM
                 value={digit}
                 onChange={(e) => handleDigit(i, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(i, e)}
-                className="h-14 w-14 rounded-md border border-input bg-input text-center text-2xl font-bold text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                className="h-14 w-14 rounded-2xl border border-white/10 bg-white/[0.03] text-center text-2xl font-bold text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 autoFocus={i === 0}
               />
             ))}
@@ -80,7 +82,7 @@ export function ProfilePinModal({ profileId, profileName, onClose }: ProfilePinM
           <button
             type="submit"
             disabled={pin.join("").length < 4 || isPending}
-            className="w-full rounded-md bg-primary py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="w-full rounded-full bg-primary py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-[0_20px_50px_rgba(113,199,4,0.24)] transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {isPending ? "Verifying…" : "Continue"}
           </button>
