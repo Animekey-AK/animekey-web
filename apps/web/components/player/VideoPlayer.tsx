@@ -8,7 +8,10 @@ interface Props {
   src: string;
   poster?: string;
   title?: string;
+  language?: "sub" | "dub";
+  initialTime?: number;
   onEnded?: () => void;
+  onTimeUpdate?: (currentTime: number) => void;
 }
 
 function formatTime(seconds: number): string {
@@ -18,7 +21,7 @@ function formatTime(seconds: number): string {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-export function VideoPlayer({ src, poster, title, onEnded }: Props) {
+export function VideoPlayer({ src, poster, title, language, initialTime, onEnded, onTimeUpdate: onTimeUpdate2 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -75,6 +78,12 @@ export function VideoPlayer({ src, poster, title, onEnded }: Props) {
       if (video.buffered.length > 0) {
         setBuffered(video.buffered.end(video.buffered.length - 1));
       }
+      onTimeUpdate2?.(video.currentTime);
+    };
+    const onLoadedMetadata = () => {
+      if (initialTime && initialTime > 0) {
+        video.currentTime = initialTime;
+      }
     };
     const onDurationChange = () => setDuration(video.duration);
     const onWaiting = () => setLoading(true);
@@ -94,6 +103,7 @@ export function VideoPlayer({ src, poster, title, onEnded }: Props) {
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
     video.addEventListener("timeupdate", onTimeUpdate);
+    video.addEventListener("loadedmetadata", onLoadedMetadata);
     video.addEventListener("durationchange", onDurationChange);
     video.addEventListener("waiting", onWaiting);
     video.addEventListener("canplay", onCanPlay);
@@ -105,6 +115,7 @@ export function VideoPlayer({ src, poster, title, onEnded }: Props) {
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
       video.removeEventListener("timeupdate", onTimeUpdate);
+      video.removeEventListener("loadedmetadata", onLoadedMetadata);
       video.removeEventListener("durationchange", onDurationChange);
       video.removeEventListener("waiting", onWaiting);
       video.removeEventListener("canplay", onCanPlay);
@@ -112,7 +123,7 @@ export function VideoPlayer({ src, poster, title, onEnded }: Props) {
       video.removeEventListener("volumechange", onVolumeChange);
       document.removeEventListener("fullscreenchange", onFullscreenChange);
     };
-  }, [onEnded]);
+  }, [onEnded, initialTime, onTimeUpdate2]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -339,6 +350,13 @@ export function VideoPlayer({ src, poster, title, onEnded }: Props) {
           <span className="flex-1 text-[12px] tabular-nums text-white/70">
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
+
+          {/* Language badge */}
+          {language && (
+            <span className="hidden rounded border border-white/20 bg-white/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white/70 sm:inline">
+              {language}
+            </span>
+          )}
 
           {/* Fullscreen */}
           <button
