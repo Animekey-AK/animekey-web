@@ -20,4 +20,6 @@ export const routes = {
   resetPassword: withLocale("/reset-password"),
   selectProfile: withLocale("/select-profile"),
   plans: withLocale("/plans"),
+  search: (q?: string) =>
+    q ? withLocale(`/search?q=${encodeURIComponent(q)}`) : withLocale("/search"),
 } as const;
