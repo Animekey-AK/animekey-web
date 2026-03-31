@@ -17,31 +17,59 @@ export interface CallToAction {
   intent: CallToActionIntent;
 }
 
-export interface HeroData {
-  status: SectionStatus;
-  eyebrow: string;
-  title: string;
-  description: string;
-  ctas: ReadonlyArray<CallToAction>;
-  media: MediaItem;
-  stats: ReadonlyArray<{
-    label: string;
-    value: string;
-    detail?: string;
-  }>;
+// ── Hero (cinematic full-screen) ──────────────────────────────────────────────
+
+export interface HeroPill {
+  label: string;
+  /** true = render in lime green */
+  accent?: boolean;
 }
 
-export interface ProofPoint {
-  title: string;
+export interface HeroSlide {
+  id: string;
+  showName: string;
+  /** e.g. "Season 2, Episode 12 just dropped" */
+  showSub: string;
+  pills: ReadonlyArray<HeroPill>;
   description: string;
-  media: MediaItem;
+  /** Route to watch page for episode 1 */
+  watchHref: string;
+  /** Initial live viewer count — drifts client-side */
+  liveViewerCount: number;
+  /** Controls the color-shifted gradient background */
+  colorVariant: "lime" | "purple" | "pink" | "amber";
+  /** Show poster image path */
+  posterImage: string;
+  /** Short meta for modal e.g. "Season 2 • 24 eps" */
+  modalMeta: string;
+  modalDescription: string;
 }
+
+export interface HeroCinematicData {
+  status: SectionStatus;
+  slides: ReadonlyArray<HeroSlide>;
+}
+
+// ── Proof strip ───────────────────────────────────────────────────────────────
+
+export interface ProofPoint {
+  emoji: string;
+  stat: string;
+}
+
+export interface ProofStripData {
+  status: SectionStatus;
+  items: ReadonlyArray<ProofPoint>;
+}
+
+// ── Content rails ─────────────────────────────────────────────────────────────
 
 export interface RailData {
   status: SectionStatus;
   variant: RailVariant;
   id: string;
   title: string;
+  titleBadge?: string;
   description?: string;
   href: string;
   items: ReadonlyArray<{
@@ -55,6 +83,8 @@ export interface RailData {
   }>;
 }
 
+// ── Promo banner ──────────────────────────────────────────────────────────────
+
 export interface PromoData {
   status: SectionStatus;
   badge?: string;
@@ -62,8 +92,13 @@ export interface PromoData {
   description: string;
   primaryCta: CallToAction;
   secondaryCta?: CallToAction;
-  media: MediaItem;
+  media?: MediaItem;
+  /** ISO date string — renders a live countdown timer when set */
+  countdownTarget?: string;
+  finePrint?: string;
 }
+
+// ── Top ranked ────────────────────────────────────────────────────────────────
 
 export interface TopRankedData {
   status: SectionStatus;
@@ -78,6 +113,8 @@ export interface TopRankedData {
   }>;
 }
 
+// ── App download ──────────────────────────────────────────────────────────────
+
 export interface AppDownloadData {
   status: SectionStatus;
   title: string;
@@ -90,24 +127,74 @@ export interface AppDownloadData {
   media?: MediaItem;
 }
 
-export interface ProofStripData {
-  status: SectionStatus;
-  items: ReadonlyArray<ProofPoint>;
+// ── Genre chips ───────────────────────────────────────────────────────────────
+
+export interface GenreChip {
+  id: string;
+  label: string;
+  emoji: string;
 }
 
+export interface GenreChipsData {
+  status: SectionStatus;
+  items: ReadonlyArray<GenreChip>;
+}
+
+// ── Instant / friction killer ─────────────────────────────────────────────────
+
+export interface InstantCard {
+  id: string;
+  title: string;
+  href: string;
+  emoji: string;
+  rating: string;
+  badge: string;
+  badgeVariant: "green" | "red";
+  colorVariant: "lime" | "purple" | "pink" | "amber" | "green-dark";
+}
+
+export interface FrictionKillerData {
+  status: SectionStatus;
+  headline: string;
+  badge: string;
+  cards: ReadonlyArray<InstantCard>;
+}
+
+// ── Footer CTA ────────────────────────────────────────────────────────────────
+
+export interface FooterCtaData {
+  status: SectionStatus;
+  eyebrow?: string;
+  headline: string;
+  headlineAccent?: string;
+  description?: string;
+  cta: CallToAction;
+  secondaryCta?: CallToAction;
+  finePrint?: string;
+}
+
+// ── Homepage root ─────────────────────────────────────────────────────────────
+
 export interface HomepageData {
-  hero: HeroData;
+  hero: HeroCinematicData;
+  genreChips: GenreChipsData;
   proofStrip: ProofStripData;
   rails: ReadonlyArray<RailData>;
+  frictionKiller: FrictionKillerData;
   promoBanner: PromoData;
   topRanked: TopRankedData;
   appDownload: AppDownloadData;
+  footerCta: FooterCtaData;
 }
 
 export type HomeSection =
   | {
       type: "hero";
-      data: HeroData;
+      data: HeroCinematicData;
+    }
+  | {
+      type: "genreChips";
+      data: GenreChipsData;
     }
   | {
       type: "proofStrip";
@@ -116,6 +203,10 @@ export type HomeSection =
   | {
       type: "rails";
       data: ReadonlyArray<RailData>;
+    }
+  | {
+      type: "frictionKiller";
+      data: FrictionKillerData;
     }
   | {
       type: "promoBanner";
@@ -128,4 +219,8 @@ export type HomeSection =
   | {
       type: "appDownload";
       data: AppDownloadData;
+    }
+  | {
+      type: "footerCta";
+      data: FooterCtaData;
     };

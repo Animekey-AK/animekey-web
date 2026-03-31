@@ -12,7 +12,14 @@ export function ContentRail({ rail }: { rail: RailData }) {
     <section className="space-y-5">
       <div className="flex items-end justify-between gap-4">
         <div className="space-y-1">
-          <h2 className="text-title-sm text-foreground">{rail.title}</h2>
+          <div className="flex items-center gap-2.5">
+            <h2 className="text-title-sm text-foreground">{rail.title}</h2>
+            {rail.titleBadge && (
+              <span className="rounded-full border border-red-500/30 bg-red-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-red-400">
+                {rail.titleBadge}
+              </span>
+            )}
+          </div>
           {rail.description ? (
             <p className="max-w-2xl text-sm text-muted-foreground">
               {rail.description}

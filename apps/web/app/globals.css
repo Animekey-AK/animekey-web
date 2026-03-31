@@ -85,6 +85,31 @@
     text-wrap: balance;
   }
 
+  /* Hero CTA pulse animation */
+  @keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(113, 199, 4, 0.45), 0 16px 48px rgba(113, 199, 4, 0.35); }
+    50%       { box-shadow: 0 0 0 12px rgba(113, 199, 4, 0), 0 20px 56px rgba(113, 199, 4, 0.35); }
+  }
+  .animate-cta-pulse {
+    animation: cta-pulse 2.4s ease-in-out infinite;
+  }
+
+
+  /* Card shimmer sweep (Aceternity-style) */
+  @keyframes shimmer-sweep {
+    0%   { transform: translateX(-100%) skewX(-12deg); }
+    100% { transform: translateX(300%) skewX(-12deg); }
+  }
+  .group:hover .shimmer-sweep {
+    animation: shimmer-sweep 0.75s ease-out forwards;
+  }
+
+  /* Promo banner background shimmer */
+  @keyframes promoBg {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.85; }
+  }
+
   /* Streaming layout utilities */
   .aspect-poster {
     aspect-ratio: 2 / 3;

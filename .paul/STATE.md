@@ -5,25 +5,31 @@
 See: .paul/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Anime fans can watch their favourite shows ad-free, on any device, anytime.
-**Current focus:** v1 Web Platform — Phase 2: Homepage Conversion
+**Current focus:** v1 Web Platform — Phase 3: Browse & Discovery
 
 ## Current Position
 
 Milestone: v1 — Web Platform (v1.0.0)
-Phase: 2 of 8 (Homepage Conversion) — Not started
+Phase: 3 of 8 (Browse & Discovery) — Not started
 Plan: Not started
-Status: Phase 1 complete — ready to plan Phase 2
-Last activity: 2026-03-31 — Phase 1 complete (monorepo foundation)
+Status: Phase 2 complete — ready to plan Phase 3
+Last activity: 2026-03-31 — Phase 2 complete, PR #22 open on GitHub
+
+Notes:
+- Phase 2 shipped: cinematic hero, genre chips, friction-killer, proof strip, promo + countdown, top-ranked, app download, footer CTA
+- Homepage layout contract: main gets pt-16, hero wrapper gets -mt-16 for full-bleed behind fixed header
+- Client island pattern established: "use client" CountdownTimer inside server PromoBanner
+- PR #22 (feature/ANI-114-homepage-hero-rebuild → develop) is open — merge before starting Phase 3
 
 Progress:
-- Milestone: [█░░░░░░░░░] 12%
-- Phase 1: [██████████] 100% ✅
+- Milestone: [███░░░░░░░] 30%
+- Phase 3: [░░░░░░░░░░] 0%
 
 ## Loop Position
 
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Phase 1 complete — ready to plan Phase 2]
+  ✓        ✓        ✓     [Phase 2 complete — ready for Phase 3 PLAN]
 ```
 
 ## Accumulated Context
@@ -57,9 +63,9 @@ None active.
 ## Session Continuity
 
 Last session: 2026-03-31
-Stopped at: Phase 1 complete — monorepo foundation fully in place
-Next action: Run `/paul:plan` to begin Phase 2 (Homepage Conversion)
-Resume context: Monorepo active — apps/web at apps/web/, tokens at packages/tokens, config at packages/config. Dev server confirmed at localhost:3000. All Phase 1 work needs to be committed and pushed (pending GitHub push).
+Stopped at: Phase 2 complete — homepage conversion fully shipped
+Next action: Merge PR #22, then /paul:plan for Phase 3 (Browse & Discovery)
+Resume file: .paul/ROADMAP.md
 
 ---
 *STATE.md — Updated after every significant action*

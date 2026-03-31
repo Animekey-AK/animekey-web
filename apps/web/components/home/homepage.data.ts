@@ -2,11 +2,12 @@ import { routes } from "@/constants/routes";
 
 import type {
   AppDownloadData,
+  FooterCtaData,
+  FrictionKillerData,
+  GenreChipsData,
+  HeroCinematicData,
   HomepageData,
-  HeroData,
   HomeSection,
-  MediaItem,
-  ProofPoint,
   ProofStripData,
   PromoData,
   RailData,
@@ -16,297 +17,376 @@ import type {
 
 const ready: SectionStatus = "ready";
 
-const heroMedia: MediaItem = {
-  src: "/images/login/login-right.svg",
-  alt: "Featured AnimeKey hero artwork",
+// ── Hero (cinematic, 4 slides) ────────────────────────────────────────────────
+
+const heroCinematic: HeroCinematicData = {
+  status: ready,
+  slides: [
+    {
+      id: "solo-leveling",
+      showName: "Solo Leveling",
+      showSub: "Season 2, Episode 12 just dropped",
+      pills: [
+        { label: "★ 9.2", accent: true },
+        { label: "24 episodes" },
+        { label: "Season 2" },
+        { label: "Sub & Dub" },
+      ],
+      description:
+        "A weak hunter awakens the power to level up alone — and becomes the strongest in the world.",
+      watchHref: routes.watch("solo-leveling"),
+      liveViewerCount: 52800,
+      colorVariant: "lime",
+      posterImage: "/images/onboarding/landingOnboardingBackground.svg",
+      modalMeta: "Season 2 • 24 eps",
+      modalDescription:
+        "A weak hunter awakens the power to level up alone — and becomes the strongest in the world. The most-watched anime this season.",
+    },
+    {
+      id: "demon-slayer",
+      showName: "Demon Slayer",
+      showSub: "Season 3, Episode 8 — Infinity Castle Arc",
+      pills: [
+        { label: "★ 9.0", accent: true },
+        { label: "44 episodes" },
+        { label: "Season 3" },
+        { label: "Sub & Dub" },
+      ],
+      description:
+        "A boy becomes a demon slayer to avenge his family. The most stunning animation ever made.",
+      watchHref: routes.watch("demon-slayer"),
+      liveViewerCount: 38172,
+      colorVariant: "purple",
+      posterImage: "/images/login/login-right.svg",
+      modalMeta: "Season 3 • 44 eps",
+      modalDescription:
+        "A young boy becomes a demon slayer to avenge his family and cure his sister. The most beautiful animation in anime history.",
+    },
+    {
+      id: "jujutsu-kaisen",
+      showName: "Jujutsu Kaisen",
+      showSub: "Season 3, Episode 12 just dropped",
+      pills: [
+        { label: "★ 9.1", accent: true },
+        { label: "60+ episodes" },
+        { label: "Season 3" },
+        { label: "Sub & Dub" },
+      ],
+      description:
+        "Cursed energy. Death matches. A boy who consumed a curse and became something else entirely.",
+      watchHref: routes.watch("jujutsu-kaisen"),
+      liveViewerCount: 44200,
+      colorVariant: "pink",
+      posterImage: "/images/onboarding/forgot-reset-passoword.png",
+      modalMeta: "Season 3 • 60+ eps",
+      modalDescription:
+        "Cursed energy. Death matches. A boy who consumed a powerful curse and became something else entirely.",
+    },
+    {
+      id: "frieren",
+      showName: "Frieren: Beyond Journey's End",
+      showSub: "Complete series — All 28 episodes",
+      pills: [
+        { label: "★ 9.4", accent: true },
+        { label: "28 episodes" },
+        { label: "Complete" },
+        { label: "Sub & Dub" },
+      ],
+      description:
+        "A centuries-old elf mage slowly learns what it means to feel. The most-rated anime of the year.",
+      watchHref: routes.watch("frieren-beyond-journeys-end"),
+      liveViewerCount: 29600,
+      colorVariant: "amber",
+      posterImage: "/images/onboarding/landingOnboardingBackground.svg",
+      modalMeta: "Complete • 28 eps",
+      modalDescription:
+        "A centuries-old elf mage retraces a journey that meant nothing to her — and slowly learns what it means to feel.",
+    },
+  ],
 };
 
-const heroCtas: HeroData["ctas"] = [
-  {
-    label: "Browse the catalog",
-    href: routes.movies,
-    intent: "primary",
-  },
-  {
-    label: "Start free",
-    href: routes.register,
-    intent: "secondary",
-  },
-  {
-    label: "See plans",
-    href: routes.plans,
-    intent: "tertiary",
-  },
-];
-
-const proofPoints: ReadonlyArray<ProofPoint> = [
-  {
-    title: "No clutter, just discovery",
-    description:
-      "The homepage keeps the high-value entry points visible without burying the catalog.",
-    media: {
-      src: "/images/home/premiumIcon.svg",
-      alt: "Premium icon",
-    },
-  },
-  {
-    title: "Built for fast browsing",
-    description:
-      "Rail sections and ranked lists give the next screen enough context to feel curated.",
-    media: {
-      src: "/images/home/like.svg",
-      alt: "Like icon",
-    },
-  },
-  {
-    title: "Easy to share and resume",
-    description:
-      "Mock content paths point straight into watch pages so later UI can wire up real playback states.",
-    media: {
-      src: "/images/home/share.svg",
-      alt: "Share icon",
-    },
-  },
-  {
-    title: "Route-backed navigation",
-    description:
-      "Primary links already use the shared route constants so the homepage stays in sync with the app shell.",
-    media: {
-      src: "/images/home/next.svg",
-      alt: "Next arrow icon",
-    },
-  },
-];
+// ── Proof strip (thin stat band) ──────────────────────────────────────────────
 
 const proofStrip: ProofStripData = {
   status: ready,
-  items: proofPoints,
+  items: [
+    { emoji: "⭐", stat: "4.9/5 from 12K+ reviews" },
+    { emoji: "📺", stat: "12,000+ episodes" },
+    { emoji: "👥", stat: "50,000+ subscribers" },
+    { emoji: "🚫", stat: "Zero ads, ever" },
+    { emoji: "🎏", stat: "Sub & Dub every show" },
+  ],
 };
+
+// ── Start watching instantly (friction killer) ────────────────────────────────
+
+const frictionKiller: FrictionKillerData = {
+  status: ready,
+  headline: "Start watching instantly",
+  badge: "⚡ No signup needed · First episode always free",
+  cards: [
+    {
+      id: "solo-leveling",
+      title: "Solo Leveling",
+      href: routes.watch("solo-leveling"),
+      emoji: "⚔",
+      rating: "9.2",
+      badge: "Free E1",
+      badgeVariant: "green",
+      colorVariant: "lime",
+    },
+    {
+      id: "demon-slayer",
+      title: "Demon Slayer",
+      href: routes.watch("demon-slayer"),
+      emoji: "🌊",
+      rating: "9.0",
+      badge: "Free E1",
+      badgeVariant: "green",
+      colorVariant: "purple",
+    },
+    {
+      id: "jujutsu-kaisen",
+      title: "Jujutsu Kaisen",
+      href: routes.watch("jujutsu-kaisen"),
+      emoji: "💀",
+      rating: "9.1",
+      badge: "Free E1",
+      badgeVariant: "green",
+      colorVariant: "pink",
+    },
+    {
+      id: "frieren",
+      title: "Frieren",
+      href: routes.watch("frieren-beyond-journeys-end"),
+      emoji: "✨",
+      rating: "9.4",
+      badge: "Free E1",
+      badgeVariant: "green",
+      colorVariant: "amber",
+    },
+    {
+      id: "attack-on-titan",
+      title: "Attack on Titan",
+      href: routes.watch("attack-on-titan"),
+      emoji: "🎯",
+      rating: "9.3",
+      badge: "New ep",
+      badgeVariant: "red",
+      colorVariant: "green-dark",
+    },
+    {
+      id: "chainsaw-man",
+      title: "Chainsaw Man",
+      href: routes.watch("chainsaw-man"),
+      emoji: "🔥",
+      rating: "8.8",
+      badge: "Free E1",
+      badgeVariant: "green",
+      colorVariant: "pink",
+    },
+  ],
+};
+
+// ── Genre chips (client-side toggle, no navigation) ───────────────────────────
+
+const genreChips: GenreChipsData = {
+  status: ready,
+  items: [
+    { id: "trending",     label: "Trending",      emoji: "🔥" },
+    { id: "action",       label: "Action",         emoji: "⚔️" },
+    { id: "romance",      label: "Romance",        emoji: "🌸" },
+    { id: "psychological", label: "Psychological", emoji: "🧠" },
+    { id: "comedy",       label: "Comedy",         emoji: "😂" },
+    { id: "school-life",  label: "School life",    emoji: "🏫" },
+    { id: "fantasy",      label: "Fantasy",        emoji: "🧝" },
+    { id: "classics",     label: "Classics",       emoji: "🎏" },
+    { id: "new-episodes", label: "New episodes",   emoji: "📅" },
+  ],
+};
+
+// ── Content rails ─────────────────────────────────────────────────────────────
 
 const rails: ReadonlyArray<RailData> = [
   {
     status: ready,
     variant: "poster",
     id: "trending-now",
-    title: "Trending now",
-    description: "The titles people are most likely to open first.",
+    title: "🔥 Trending",
+    titleBadge: undefined,
+    description: "Most-watched this week",
     href: routes.series,
     items: [
       {
         id: "solo-leveling",
         title: "Solo Leveling",
         href: routes.watch("solo-leveling"),
-        media: {
-          src: "/images/card.png",
-          alt: "Solo Leveling poster",
-        },
-        badge: "Popular",
+        media: { src: "/images/card.png", alt: "Solo Leveling poster" },
+        badge: "#1 This week",
+      },
+      {
+        id: "demon-slayer",
+        title: "Demon Slayer",
+        href: routes.watch("demon-slayer"),
+        media: { src: "/images/placeholder1.png", alt: "Demon Slayer poster" },
+        badge: "New ep",
       },
       {
         id: "jujutsu-kaisen",
         title: "Jujutsu Kaisen",
         href: routes.watch("jujutsu-kaisen"),
-        media: {
-          src: "/images/placeholder1.png",
-          alt: "Jujutsu Kaisen poster",
-        },
-        badge: "New episode",
+        media: { src: "/images/placeholder.png", alt: "Jujutsu Kaisen poster" },
+        badge: "S3 New",
+      },
+      {
+        id: "frieren",
+        title: "Frieren",
+        href: routes.watch("frieren-beyond-journeys-end"),
+        media: { src: "/images/card.png", alt: "Frieren poster" },
+        badge: "Top rated",
       },
       {
         id: "attack-on-titan",
         title: "Attack on Titan",
         href: routes.watch("attack-on-titan"),
-        media: {
-          src: "/images/placeholder.png",
-          alt: "Attack on Titan poster",
-        },
-        badge: "Top rated",
+        media: { src: "/images/placeholder.png", alt: "Attack on Titan poster" },
+        badge: "Staff pick",
+      },
+      {
+        id: "chainsaw-man",
+        title: "Chainsaw Man",
+        href: routes.watch("chainsaw-man"),
+        media: { src: "/images/card.png", alt: "Chainsaw Man poster" },
+        badge: "Hot",
       },
     ],
   },
   {
     status: ready,
     variant: "landscape",
-    id: "continue-watching",
-    title: "Continue watching",
-    description: "A second rail for the watch-later and resume states.",
+    id: "new-this-week",
+    title: "New this week",
+    titleBadge: "🔴 Updated today",
+    description: "Fresh episodes & first drops",
     href: routes.series,
     items: [
       {
-        id: "demon-slayer",
+        id: "demon-slayer-s3e8",
         title: "Demon Slayer",
         href: routes.watch("demon-slayer"),
-        media: {
-          src: "/images/promo.png",
-          alt: "Demon Slayer poster",
-        },
-        eyebrow: "Episode 8",
+        media: { src: "/images/promo.png", alt: "Demon Slayer" },
+        eyebrow: "S3 E8 · Resume",
+        badge: "62%",
       },
       {
-        id: "my-hero-academia",
-        title: "My Hero Academia",
-        href: routes.watch("my-hero-academia"),
-        media: {
-          src: "/images/card.png",
-          alt: "My Hero Academia poster",
-        },
-        eyebrow: "Episode 3",
+        id: "jujutsu-kaisen-s3e12",
+        title: "Jujutsu Kaisen",
+        href: routes.watch("jujutsu-kaisen"),
+        media: { src: "/images/card.png", alt: "Jujutsu Kaisen" },
+        eyebrow: "S3 E12 · New",
       },
       {
-        id: "one-piece",
-        title: "One Piece",
-        href: routes.watch("one-piece"),
-        media: {
-          src: "/images/placeholder1.png",
-          alt: "One Piece poster",
-        },
-        eyebrow: "Episode 1120",
+        id: "solo-leveling-s2e12",
+        title: "Solo Leveling",
+        href: routes.watch("solo-leveling"),
+        media: { src: "/images/placeholder1.png", alt: "Solo Leveling" },
+        eyebrow: "S2 E12 · Just dropped",
       },
-    ],
-  },
-  {
-    status: ready,
-    variant: "compact",
-    id: "staff-picks",
-    title: "Staff picks",
-    description: "A small editorial rail for launch-day recommendations.",
-    href: routes.movies,
-    items: [
       {
-        id: "spy-x-family",
+        id: "spy-x-family-finale",
         title: "Spy x Family",
         href: routes.watch("spy-x-family"),
-        media: {
-          src: "/images/placeholder.png",
-          alt: "Spy x Family poster",
-        },
-        badge: "Family favorite",
-      },
-      {
-        id: "chainsaw-man",
-        title: "Chainsaw Man",
-        href: routes.watch("chainsaw-man"),
-        media: {
-          src: "/images/card.png",
-          alt: "Chainsaw Man poster",
-        },
-        badge: "Editor pick",
-      },
-      {
-        id: "vinland-saga",
-        title: "Vinland Saga",
-        href: routes.watch("vinland-saga"),
-        media: {
-          src: "/images/promo.png",
-          alt: "Vinland Saga poster",
-        },
-        badge: "Binge-worthy",
+        media: { src: "/images/placeholder.png", alt: "Spy x Family" },
+        eyebrow: "Finale · S2 E13",
+        badge: "Finale",
       },
     ],
   },
 ];
 
+// ── Promo banner ──────────────────────────────────────────────────────────────
+
 const promoBanner: PromoData = {
   status: ready,
-  badge: "Limited launch promo",
-  title: "Upgrade paths stay visible without breaking the flow.",
+  badge: "⚡ Limited launch offer",
+  title: "7 days free.\nNo card. No catch.",
   description:
-    "The promo slot is reserved for a single high-value message, like premium access or a seasonal offer.",
+    "Every episode. Every season. Ad-free. In 4K. Cancel in 30 seconds if it's not for you — but it will be.",
   primaryCta: {
-    label: "See plans",
+    label: "▶ Start free trial",
     href: routes.plans,
     intent: "primary",
   },
   secondaryCta: {
-    label: "Browse the catalog",
-    href: routes.movies,
+    label: "Browse catalog →",
+    href: routes.series,
     intent: "secondary",
   },
-  media: {
-    src: "/images/home/premium.svg",
-    alt: "Premium promo artwork",
-  },
+  countdownTarget: "2026-04-07T00:00:00Z",
+  finePrint: "✓ No credit card   ✓ Cancel anytime   ✓ Ad-free forever   ✓ 4K streaming",
 };
+
+// ── Top ranked ────────────────────────────────────────────────────────────────
 
 const topRanked: TopRankedData = {
   status: ready,
-  title: "Top ranked",
-  description: "The five most visible titles in the launch plan.",
+  title: "Top 5",
+  description: "What fans are watching this week",
   items: [
     {
       rank: 1,
-      title: "Frieren: Beyond Journey's End",
-      href: routes.watch("frieren-beyond-journeys-end"),
-      media: {
-        src: "/images/home/top5/1.svg",
-        alt: "Frieren poster",
-      },
-      label: "Most watched",
+      title: "Solo Leveling",
+      href: routes.watch("solo-leveling"),
+      media: { src: "/images/home/top5/1.svg", alt: "Solo Leveling" },
+      label: "Action · Fantasy · Season 2",
     },
     {
       rank: 2,
-      title: "Demon Slayer",
-      href: routes.watch("demon-slayer"),
-      media: {
-        src: "/images/home/top5/2.svg",
-        alt: "Demon Slayer poster",
-      },
-      label: "Trending fast",
+      title: "Frieren: Beyond Journey's End",
+      href: routes.watch("frieren-beyond-journeys-end"),
+      media: { src: "/images/home/top5/2.svg", alt: "Frieren" },
+      label: "Fantasy · Slice of life · Complete",
     },
     {
       rank: 3,
       title: "Jujutsu Kaisen",
       href: routes.watch("jujutsu-kaisen"),
-      media: {
-        src: "/images/home/top5/3.svg",
-        alt: "Jujutsu Kaisen poster",
-      },
-      label: "Hot pick",
+      media: { src: "/images/home/top5/3.svg", alt: "Jujutsu Kaisen" },
+      label: "Action · Supernatural · Season 3",
     },
     {
       rank: 4,
-      title: "Attack on Titan",
-      href: routes.watch("attack-on-titan"),
-      media: {
-        src: "/images/home/top5/4.svg",
-        alt: "Attack on Titan poster",
-      },
-      label: "Fan favorite",
+      title: "Demon Slayer",
+      href: routes.watch("demon-slayer"),
+      media: { src: "/images/home/top5/4.svg", alt: "Demon Slayer" },
+      label: "Action · Drama · Season 3",
     },
     {
       rank: 5,
-      title: "Spy x Family",
-      href: routes.watch("spy-x-family"),
-      media: {
-        src: "/images/home/top5/5.svg",
-        alt: "Spy x Family poster",
-      },
-      label: "Rising now",
+      title: "Attack on Titan",
+      href: routes.watch("attack-on-titan"),
+      media: { src: "/images/home/top5/5.svg", alt: "Attack on Titan" },
+      label: "Action · Drama · Complete",
     },
   ],
 };
 
+// ── App download ──────────────────────────────────────────────────────────────
+
 const appDownload: AppDownloadData = {
   status: ready,
   title: "Take AnimeKey with you on any screen.",
-  description:
-    "A simple download block that can later point to the real mobile app stores without changing the homepage contract.",
+  description: "Watch on mobile, tablet, TV, or web. Your watchlist syncs everywhere.",
   stores: [
     {
       label: "Download on the App Store",
       href: "https://www.apple.com/app-store/",
-      media: {
-        src: "/images/footer/apple_store.svg",
-        alt: "Apple App Store badge",
-      },
+      media: { src: "/images/footer/apple_store.svg", alt: "Apple App Store badge" },
     },
     {
       label: "Get it on Google Play",
       href: "https://play.google.com/store/games",
-      media: {
-        src: "/images/footer/play-store.svg",
-        alt: "Google Play badge",
-      },
+      media: { src: "/images/footer/play-store.svg", alt: "Google Play badge" },
     },
   ],
   media: {
@@ -315,45 +395,51 @@ const appDownload: AppDownloadData = {
   },
 };
 
-export const homepageData: HomepageData = {
-  hero: {
-    status: ready,
-    eyebrow: "ANIMEKEY HOME",
-    title: "Watch anime, movies, and series with one smooth home screen.",
-    description:
-      "A compact homepage built for discovery: featured picks, ranked titles, and quick paths into the catalog.",
-    ctas: heroCtas,
-    media: heroMedia,
-    stats: [
-      {
-        label: "Featured collections",
-        value: "12+",
-        detail: "ready for launch",
-      },
-      {
-        label: "Fast access routes",
-        value: "3",
-        detail: "movies, series, plans",
-      },
-      {
-        label: "Ranking spotlight",
-        value: "Top 5",
-        detail: "highlight rail",
-      },
-    ],
+// ── Footer CTA ────────────────────────────────────────────────────────────────
+
+const footerCta: FooterCtaData = {
+  status: ready,
+  eyebrow: "✦ You've scrolled this far. You already know.",
+  headline: "Your next obsession\nis ",
+  headlineAccent: "one click away.",
+  description:
+    "Join 50,000 fans who stopped scrolling and started watching. First 7 days on us.",
+  cta: {
+    label: "▶ Start free trial",
+    href: routes.plans,
+    intent: "primary",
   },
+  secondaryCta: {
+    label: "Browse all anime",
+    href: routes.series,
+    intent: "secondary",
+  },
+  finePrint: "No credit card · Cancel anytime · Ad-free forever",
+};
+
+// ── Exports ───────────────────────────────────────────────────────────────────
+
+export const homepageData: HomepageData = {
+  hero: heroCinematic,
+  genreChips,
   proofStrip,
   rails,
+  frictionKiller,
   promoBanner,
   topRanked,
   appDownload,
+  footerCta,
 };
 
+// Section order matches mockup: hero → proof → instant → genre → rails → promo → top5 → app → fcta
 export const homeSections: HomeSection[] = [
-  { type: "hero", data: homepageData.hero },
-  { type: "proofStrip", data: homepageData.proofStrip },
-  { type: "rails", data: homepageData.rails },
-  { type: "promoBanner", data: homepageData.promoBanner },
-  { type: "topRanked", data: homepageData.topRanked },
-  { type: "appDownload", data: homepageData.appDownload },
+  { type: "hero",           data: homepageData.hero },
+  { type: "proofStrip",    data: homepageData.proofStrip },
+  { type: "frictionKiller", data: homepageData.frictionKiller },
+  { type: "genreChips",    data: homepageData.genreChips },
+  { type: "rails",         data: homepageData.rails },
+  { type: "promoBanner",   data: homepageData.promoBanner },
+  { type: "topRanked",     data: homepageData.topRanked },
+  { type: "appDownload",   data: homepageData.appDownload },
+  { type: "footerCta",     data: homepageData.footerCta },
 ];

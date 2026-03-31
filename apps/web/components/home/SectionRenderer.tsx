@@ -1,5 +1,10 @@
+import { AnimatedSection } from "./AnimatedSection";
+import { SpotlightSection } from "./SpotlightSection";
 import { AppDownloadBand } from "./AppDownloadBand";
 import { ContentRail } from "./ContentRail";
+import { FooterCta } from "./FooterCta";
+import { FrictionKiller } from "./FrictionKiller";
+import { GenreChips } from "./GenreChips";
 import { HeroSpotlight } from "./HeroSpotlight";
 import { PromoBanner } from "./PromoBanner";
 import { ProofStrip } from "./ProofStrip";
@@ -12,23 +17,64 @@ export function SectionRenderer({ sections }: { sections: HomeSection[] }) {
       {sections.map((section, index) => {
         switch (section.type) {
           case "hero":
-            return <HeroSpotlight key={`hero-${index}`} hero={section.data} />;
+            return (
+              <HeroSpotlight key={`hero-${index}`} hero={section.data} />
+            );
+
           case "proofStrip":
             return <ProofStrip key={`proof-${index}`} section={section.data} />;
+
+          case "frictionKiller":
+            return (
+              <AnimatedSection key={`friction-${index}`} delay={0}>
+                <FrictionKiller section={section.data} />
+              </AnimatedSection>
+            );
+
+          case "genreChips":
+            return (
+              <AnimatedSection key={`genre-${index}`} delay={0.05}>
+                <GenreChips section={section.data} />
+              </AnimatedSection>
+            );
+
           case "rails":
-            return section.data.map((rail) => (
-              <ContentRail key={rail.id} rail={rail} />
+            return section.data.map((rail, ri) => (
+              <AnimatedSection key={rail.id} delay={ri * 0.08}>
+                <SpotlightSection>
+                  <ContentRail rail={rail} />
+                </SpotlightSection>
+              </AnimatedSection>
             ));
+
           case "promoBanner":
-            return <PromoBanner key={`promo-${index}`} promo={section.data} />;
+            return (
+              <AnimatedSection key={`promo-${index}`} delay={0}>
+                <PromoBanner promo={section.data} />
+              </AnimatedSection>
+            );
+
           case "topRanked":
             return (
-              <TopRankedShowcase key={`ranked-${index}`} section={section.data} />
+              <AnimatedSection key={`ranked-${index}`} delay={0}>
+                <TopRankedShowcase section={section.data} />
+              </AnimatedSection>
             );
+
           case "appDownload":
             return (
-              <AppDownloadBand key={`download-${index}`} section={section.data} />
+              <AnimatedSection key={`download-${index}`} delay={0}>
+                <AppDownloadBand section={section.data} />
+              </AnimatedSection>
             );
+
+          case "footerCta":
+            return (
+              <AnimatedSection key={`footer-cta-${index}`} delay={0}>
+                <FooterCta section={section.data} />
+              </AnimatedSection>
+            );
+
           default:
             return null;
         }

@@ -35,10 +35,11 @@ Anime fans can watch their favourite shows ad-free, on any device, anytime.
 - [x] Homepage hero + content carousels (basic)
 - [x] Navbar active state + styling polish
 - [x] Monorepo migration — pnpm + Turborepo, apps/web, packages/tokens, packages/config — Phase 1
+- [x] Homepage conversion redesign — cinematic hero, genre chips, friction-killer, countdown timer, footer CTA — Phase 2
 
 ### Active (In Progress)
 
-- [ ] Homepage conversion redesign — mockup approved (`03-homepage-elite.html`)
+- [ ] Browse & discovery (search, genre filtering) — Phase 3
 
 ### Planned (Next)
 
@@ -100,7 +101,9 @@ Anime fans can watch their favourite shows ad-free, on any device, anytime.
 | Design tokens: dual output (JS + CSS) | Web (Tailwind config) + Mobile (StyleSheet) from single source | 2026-03-31 | Active |
 | Checkout.com replacing Payfort | Better API, regional support, server-side only | 2026-03-31 | Active |
 | TV/PS: web app with TV mode | PS5 is Chromium-based; TV mode = D-pad nav + responsive breakpoints | 2026-03-31 | Active |
-| Homepage: conversion-first redesign | Platform-first headline, pulsing CTA, social proof, click-to-preview modal | 2026-03-31 | Active |
+| Homepage: conversion-first redesign | Platform-first headline, pulsing CTA, social proof, countdown, footer CTA | 2026-03-31 | Shipped Phase 2 |
+| Hero: no modal, explicit buttons only | Preview modal was redundant (duplicated hero info); Watch trailer surfaced as direct CTA | 2026-03-31 | Active |
+| Client island for countdown | CountdownTimer as "use client" sub-component inside server PromoBanner — preserves RSC tree | 2026-03-31 | Active |
 
 ## Success Metrics
 
@@ -136,4 +139,4 @@ Anime fans can watch their favourite shows ad-free, on any device, anytime.
 
 ---
 *PROJECT.md — Updated when requirements or context change*
-*Last updated: 2026-03-31 after Phase 1 (Monorepo Foundation)*
+*Last updated: 2026-03-31 after Phase 2 (Homepage Conversion)*
