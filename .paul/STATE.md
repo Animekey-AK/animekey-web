@@ -5,15 +5,15 @@
 See: .paul/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Anime fans can watch their favourite shows ad-free, on any device, anytime.
-**Current focus:** v1 Web Platform — Phase 3: Browse & Discovery
+**Current focus:** v1 Web Platform — Phase 3: Browse & Discovery (03-01 complete)
 
 ## Current Position
 
 Milestone: v1 — Web Platform (v1.0.0)
-Phase: 3 of 8 (Browse & Discovery) — Not started
-Plan: Not started
-Status: Phase 2 complete (with mockup-alignment polish) — ready to plan Phase 3
-Last activity: 2026-03-31 — Homepage fully aligned to mockup, PR #22 updated and pushed
+Phase: 3 of 8 (Browse & Discovery) — In progress
+Plan: 03-01 complete (1 of 3 plans)
+Status: 03-01 shipped — search overlay, genre filter browse pages, /search route
+Last activity: 2026-03-31 — PR #23 raised (feature/ANI-browse-discovery-03-01 → develop)
 
 Notes:
 - Phase 2 shipped: cinematic hero, genre chips, friction-killer, proof strip, promo + countdown, top-ranked, app download, footer CTA
@@ -24,14 +24,14 @@ Notes:
 - PR #22 (feature/ANI-114-homepage-hero-rebuild → develop) updated — ready to merge before Phase 3
 
 Progress:
-- Milestone: [███░░░░░░░] 30%
-- Phase 3: [░░░░░░░░░░] 0%
+- Milestone: [████░░░░░░] 38%
+- Phase 3: [███░░░░░░░] 33% (1/3 plans complete)
 
 ## Loop Position
 
 ```
-PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Phase 2 complete — ready for Phase 3 PLAN]
+Phase 2: PLAN ✓ → APPLY ✓ → UNIFY ✓  [complete]
+Phase 3: PLAN ✓ → APPLY ✓ → UNIFY ✓  [03-01 complete, 03-02 next]
 ```
 
 ## Accumulated Context
@@ -68,8 +68,8 @@ None active.
 ## Session Continuity
 
 Last session: 2026-03-31
-Stopped at: Phase 2 + mockup-alignment complete — homepage fully matches approved design
-Next action: Merge PR #22, then /paul:plan for Phase 3 (Browse & Discovery)
+Stopped at: Phase 3 plan 03-01 complete — search overlay, browse pages, genre filter
+Next action: Merge PR #23, then /paul:plan 3 for 03-02 (Show detail page + episode list)
 Resume file: .paul/ROADMAP.md
 
 ---
