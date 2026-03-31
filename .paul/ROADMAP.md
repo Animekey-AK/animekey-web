@@ -8,14 +8,14 @@ Animekey ships in two milestones. v1 delivers the complete web platform — mono
 
 **v1 — Web Platform** (v1.0.0)
 Status: In progress
-Phases: 1 of 8 complete
+Phases: 2 of 8 complete
 
 ## Phases
 
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
 | 1 | Monorepo Foundation | 3/3 | ✅ Complete | 2026-03-31 |
-| 2 | Homepage Conversion | TBD | Planning | - |
+| 2 | Homepage Conversion | 3/3 | ✅ Complete | 2026-03-31 |
 | 3 | Browse & Discovery | TBD | Not started | - |
 | 4 | Video Player & DRM | TBD | Not started | - |
 | 5 | Auth & Profiles | TBD | Not started | - |
@@ -63,8 +63,9 @@ Phases: 1 of 8 complete
 - Footer CTA
 
 **Plans:**
-- [ ] 02-01: Hero + header + modal
-- [ ] 02-02: Rails, genre chips, proof strip, promo banner
+- [x] 02-02: HeroSpotlight cinematic rewrite, HomeHeader, Storybook stories
+- [x] 02-03: GenreChips + FrictionKiller conversion sections
+- [x] 02-04: Promo countdown timer (CountdownTimer client island) + FooterCta
 
 ---
 
