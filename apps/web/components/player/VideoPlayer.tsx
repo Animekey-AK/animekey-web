@@ -35,6 +35,8 @@ export function VideoPlayer({ src, poster, title, language, initialTime, onEnded
   const [loading, setLoading] = useState(true);
   const [showControls, setShowControls] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showShortcuts, setShowShortcuts] = useState(false);
 
   // Init HLS
   useEffect(() => {
@@ -48,6 +50,9 @@ export function VideoPlayer({ src, poster, title, language, initialTime, onEnded
 
       if (Hls.isSupported()) {
         hlsInstance = new Hls({ enableWorker: true });
+        hlsInstance.on(Hls.Events.ERROR, (_, data) => {
+          if (data.fatal) setError("Stream unavailable. Please try again.");
+        });
         hlsInstance.loadSource(src);
         hlsInstance.attachMedia(video!);
       } else if (video!.canPlayType("application/vnd.apple.mpegurl")) {
@@ -99,6 +104,7 @@ export function VideoPlayer({ src, poster, title, language, initialTime, onEnded
     const onFullscreenChange = () => {
       setFullscreen(!!document.fullscreenElement);
     };
+    const onVideoError = () => setError("Playback error. Please try again.");
 
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
@@ -109,6 +115,7 @@ export function VideoPlayer({ src, poster, title, language, initialTime, onEnded
     video.addEventListener("canplay", onCanPlay);
     video.addEventListener("ended", onEnded2);
     video.addEventListener("volumechange", onVolumeChange);
+    video.addEventListener("error", onVideoError);
     document.addEventListener("fullscreenchange", onFullscreenChange);
 
     return () => {
@@ -121,9 +128,20 @@ export function VideoPlayer({ src, poster, title, language, initialTime, onEnded
       video.removeEventListener("canplay", onCanPlay);
       video.removeEventListener("ended", onEnded2);
       video.removeEventListener("volumechange", onVolumeChange);
+      video.removeEventListener("error", onVideoError);
       document.removeEventListener("fullscreenchange", onFullscreenChange);
     };
   }, [onEnded, initialTime, onTimeUpdate2]);
+
+  const toggleFullscreen = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    if (!document.fullscreenElement) {
+      container.requestFullscreen().catch(console.error);
+    } else {
+      document.exitFullscreen();
+    }
+  }, []);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -165,20 +183,23 @@ export function VideoPlayer({ src, poster, title, language, initialTime, onEnded
           e.preventDefault();
           video.muted = !video.muted;
           break;
+        case "?":
+          e.preventDefault();
+          setShowShortcuts((v) => !v);
+          break;
+        case "Escape":
+          setShowShortcuts(false);
+          break;
       }
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [toggleFullscreen]);
 
-  const toggleFullscreen = useCallback(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    if (!document.fullscreenElement) {
-      container.requestFullscreen().catch(console.error);
-    } else {
-      document.exitFullscreen();
-    }
+  const handleRetry = useCallback(() => {
+    setError(null);
+    setLoading(true);
+    window.location.reload();
   }, []);
 
   const togglePlay = useCallback(() => {
@@ -246,15 +267,32 @@ export function VideoPlayer({ src, poster, title, language, initialTime, onEnded
         preload="metadata"
       />
 
+      {/* Error state */}
+      {error && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/90">
+          <svg className="h-12 w-12 text-white/30" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+          </svg>
+          <p className="text-[14px] text-white/60">{error}</p>
+          <button
+            type="button"
+            onClick={handleRetry}
+            className="rounded-full bg-primary px-5 py-2.5 text-[13px] font-bold text-primary-foreground transition-all hover:-translate-y-px"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
       {/* Loading spinner */}
-      {loading && (
+      {loading && !error && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="h-12 w-12 animate-spin rounded-full border-4 border-white/20 border-t-primary" />
         </div>
       )}
 
       {/* Big play button overlay (when paused) */}
-      {!playing && !loading && (
+      {!playing && !loading && !error && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm ring-2 ring-white/20 transition-transform hover:scale-105">
             <svg className="ml-1 h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -377,6 +415,49 @@ export function VideoPlayer({ src, poster, title, language, initialTime, onEnded
           </button>
         </div>
       </div>
+
+      {/* Keyboard shortcut overlay */}
+      {showShortcuts && (
+        <div
+          className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setShowShortcuts(false)}
+        >
+          <div
+            className="rounded-2xl border border-white/10 bg-[rgba(10,10,10,0.96)] p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-4 flex items-center justify-between gap-8">
+              <h3 className="text-[14px] font-bold text-foreground">Keyboard shortcuts</h3>
+              <button
+                type="button"
+                onClick={() => setShowShortcuts(false)}
+                className="text-[14px] text-white/40 transition-colors hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-3">
+              {(
+                [
+                  ["Space / K", "Play / Pause"],
+                  ["← / →", "Seek ±10 seconds"],
+                  ["↑ / ↓", "Volume ±10%"],
+                  ["M", "Mute / Unmute"],
+                  ["F", "Fullscreen"],
+                  ["?", "Show shortcuts"],
+                ] as [string, string][]
+              ).map(([key, desc]) => (
+                <div key={key} className="flex items-center gap-3">
+                  <kbd className="min-w-[52px] rounded border border-white/20 bg-white/[0.06] px-2 py-1 text-center text-[11px] font-mono text-white/70">
+                    {key}
+                  </kbd>
+                  <span className="text-[12px] text-foreground/60">{desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
