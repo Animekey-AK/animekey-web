@@ -1,5 +1,6 @@
 import { AppDownloadBand } from "./AppDownloadBand";
 import { ContentRail } from "./ContentRail";
+import { FooterCta } from "./FooterCta";
 import { FrictionKiller } from "./FrictionKiller";
 import { GenreChips } from "./GenreChips";
 import { HeroSpotlight } from "./HeroSpotlight";
@@ -37,6 +38,8 @@ export function SectionRenderer({ sections }: { sections: HomeSection[] }) {
             return (
               <AppDownloadBand key={`download-${index}`} section={section.data} />
             );
+          case "footerCta":
+            return <FooterCta key={`footer-cta-${index}`} section={section.data} />;
           default:
             return null;
         }

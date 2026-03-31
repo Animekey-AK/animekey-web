@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
+import { CountdownTimer } from "./CountdownTimer";
 import type { CallToActionIntent, PromoData } from "./types";
 
 const ctaClasses: Record<CallToActionIntent, string> = {
@@ -26,6 +27,9 @@ export function PromoBanner({ promo }: { promo: PromoData }) {
               {promo.badge}
             </p>
           ) : null}
+          {promo.countdownTarget && (
+            <CountdownTimer targetDate={promo.countdownTarget} />
+          )}
           <div className="space-y-3">
             <h2 className="max-w-2xl text-title text-foreground">
               {promo.title}

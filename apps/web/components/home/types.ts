@@ -93,6 +93,8 @@ export interface PromoData {
   primaryCta: CallToAction;
   secondaryCta?: CallToAction;
   media: MediaItem;
+  /** ISO date string — renders a live countdown timer when set */
+  countdownTarget?: string;
 }
 
 // ── Top ranked ────────────────────────────────────────────────────────────────
@@ -154,6 +156,15 @@ export interface FrictionKillerData {
   liveCount?: number;
 }
 
+// ── Footer CTA ────────────────────────────────────────────────────────────────
+
+export interface FooterCtaData {
+  status: SectionStatus;
+  headline: string;
+  subline?: string;
+  cta: CallToAction;
+}
+
 // ── Homepage root ─────────────────────────────────────────────────────────────
 
 export interface HomepageData {
@@ -165,6 +176,7 @@ export interface HomepageData {
   promoBanner: PromoData;
   topRanked: TopRankedData;
   appDownload: AppDownloadData;
+  footerCta: FooterCtaData;
 }
 
 export type HomeSection =
@@ -199,4 +211,8 @@ export type HomeSection =
   | {
       type: "appDownload";
       data: AppDownloadData;
+    }
+  | {
+      type: "footerCta";
+      data: FooterCtaData;
     };

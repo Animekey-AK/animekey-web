@@ -2,6 +2,7 @@ import { routes } from "@/constants/routes";
 
 import type {
   AppDownloadData,
+  FooterCtaData,
   FrictionKillerData,
   GenreChipsData,
   HeroCinematicData,
@@ -316,6 +317,7 @@ const promoBanner: PromoData = {
     src: "/images/home/premium.svg",
     alt: "Premium promo artwork",
   },
+  countdownTarget: "2026-04-07T00:00:00Z",
 };
 
 // ── Top ranked ────────────────────────────────────────────────────────────────
@@ -429,6 +431,19 @@ const appDownload: AppDownloadData = {
   },
 };
 
+// ── Footer CTA ────────────────────────────────────────────────────────────────
+
+const footerCta: FooterCtaData = {
+  status: ready,
+  headline: "Watch free for 7 days.",
+  subline: "No credit card needed. Cancel anytime.",
+  cta: {
+    label: "Start watching free",
+    href: routes.plans,
+    intent: "primary",
+  },
+};
+
 // ── Exports ───────────────────────────────────────────────────────────────────
 
 export const homepageData: HomepageData = {
@@ -440,6 +455,7 @@ export const homepageData: HomepageData = {
   promoBanner,
   topRanked,
   appDownload,
+  footerCta,
 };
 
 export const homeSections: HomeSection[] = [
@@ -451,4 +467,5 @@ export const homeSections: HomeSection[] = [
   { type: "promoBanner",   data: homepageData.promoBanner },
   { type: "topRanked",     data: homepageData.topRanked },
   { type: "appDownload",   data: homepageData.appDownload },
+  { type: "footerCta",     data: homepageData.footerCta },
 ];
