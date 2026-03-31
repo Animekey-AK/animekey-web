@@ -1,7 +1,11 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 import type { TopRankedData } from "./types";
+
+const rankEmojis = ["⚔", "✨", "💀", "🌊", "🎯"];
 
 export function TopRankedShowcase({ section }: { section: TopRankedData }) {
   if (section.status !== "ready" || section.items.length === 0) {
@@ -11,47 +15,55 @@ export function TopRankedShowcase({ section }: { section: TopRankedData }) {
   return (
     <section className="space-y-5">
       <div className="space-y-1">
-        <h2 className="text-title-sm text-foreground">{section.title}</h2>
-        {section.description ? (
-          <p className="max-w-2xl text-sm text-muted-foreground">
-            {section.description}
-          </p>
-        ) : null}
+        <h2 className="text-title-sm text-foreground">
+          Top 5 <span className="text-primary">right now</span>
+        </h2>
+        {section.description && (
+          <p className="text-sm text-muted-foreground">{section.description}</p>
+        )}
       </div>
 
-      <div className="flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {section.items.map((item) => (
-          <Link
+      <div className="flex flex-col divide-y divide-white/[0.06]">
+        {section.items.map((item, i) => (
+          <motion.div
             key={item.rank}
-            href={item.href}
-            prefetch={false}
-            data-analytics-id="home-top-ranked"
-            className="group relative flex w-56 shrink-0 items-end gap-3 rounded-[1.75rem] border border-border/30 bg-card px-4 pb-4 pt-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)]"
+            initial={{ opacity: 0, x: -12 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: i * 0.07 }}
           >
-            <div className="absolute inset-x-0 top-0 h-24 rounded-t-[1.75rem] bg-gradient-to-b from-primary/20 to-transparent" />
-            <div className="relative flex min-w-0 flex-1 items-end gap-3">
-              <div className="relative h-28 w-16 shrink-0">
-                <Image
-                  src={item.media.src}
-                  alt={item.media.alt}
-                  fill
-                  sizes="64px"
-                  className="object-contain"
-                />
+            <Link
+              href={item.href}
+              prefetch={false}
+              data-analytics-id="home-top-ranked"
+              className="group flex items-center gap-4 py-4 transition-colors hover:bg-primary/5 rounded-xl px-3 -mx-3"
+            >
+              {/* Rank */}
+              <span className="w-8 shrink-0 text-center text-[13px] font-black tabular-nums text-white/20 group-hover:text-primary/60">
+                {String(item.rank).padStart(2, "0")}
+              </span>
+
+              {/* Emoji poster */}
+              <div className="flex h-14 w-10 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-[rgba(255,255,255,0.04)] text-[26px]">
+                {rankEmojis[i] ?? "▶"}
               </div>
-              <div className="min-w-0 space-y-1">
-                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-primary">
-                  #{item.rank}
-                </p>
-                <h3 className="line-clamp-2 text-sm font-semibold text-foreground">
+
+              {/* Info */}
+              <div className="min-w-0 flex-1">
+                <p className="line-clamp-1 text-[14px] font-bold text-white group-hover:text-primary">
                   {item.title}
-                </h3>
-                {item.label ? (
-                  <p className="text-xs text-muted-foreground">{item.label}</p>
-                ) : null}
+                </p>
+                {item.label && (
+                  <p className="text-[12px] text-white/38">{item.label}</p>
+                )}
               </div>
-            </div>
-          </Link>
+
+              {/* Play arrow */}
+              <span className="shrink-0 text-[18px] text-white/20 transition-all duration-200 group-hover:translate-x-1 group-hover:text-primary">
+                ▶
+              </span>
+            </Link>
+          </motion.div>
         ))}
       </div>
     </section>

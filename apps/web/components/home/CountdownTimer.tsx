@@ -24,11 +24,18 @@ function pad(n: number) {
   return String(n).padStart(2, "0");
 }
 
-export function CountdownTimer({ targetDate }: { targetDate: string }) {
+interface Props {
+  targetDate: string;
+  /** Renders as compact inline HH:MM:SS string instead of stacked units */
+  compact?: boolean;
+}
+
+export function CountdownTimer({ targetDate, compact = false }: Props) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
 
   useEffect(() => {
-    // Initialise on client only — avoids SSR/hydration mismatch
+    // Intentional: initialise on client only to prevent SSR/hydration mismatch
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTimeLeft(calculate(targetDate));
     const id = setInterval(() => setTimeLeft(calculate(targetDate)), 1_000);
     return () => clearInterval(id);
@@ -36,11 +43,22 @@ export function CountdownTimer({ targetDate }: { targetDate: string }) {
 
   if (!timeLeft) return null;
 
+  if (compact) {
+    const hh = pad(timeLeft.days * 24 + timeLeft.hours);
+    const mm = pad(timeLeft.minutes);
+    const ss = pad(timeLeft.seconds);
+    return (
+      <span className="font-bold tabular-nums text-white/80">
+        {hh}:{mm}:{ss}
+      </span>
+    );
+  }
+
   const units = [
-    { label: "Days", value: timeLeft.days },
-    { label: "Hrs",  value: timeLeft.hours },
-    { label: "Min",  value: timeLeft.minutes },
-    { label: "Sec",  value: timeLeft.seconds },
+    { label: "Days",  value: timeLeft.days },
+    { label: "Hrs",   value: timeLeft.hours },
+    { label: "Min",   value: timeLeft.minutes },
+    { label: "Sec",   value: timeLeft.seconds },
   ];
 
   return (

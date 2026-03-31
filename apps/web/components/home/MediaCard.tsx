@@ -83,7 +83,7 @@ export function MediaCard({
                 ? "(max-width: 768px) 72vw, 20rem"
                 : "(max-width: 768px) 40vw, 11rem"
             }
-            className="object-cover opacity-28 blur-sm transition-transform duration-500 group-hover:scale-[1.04] group-hover:opacity-35"
+            className="object-cover opacity-60 transition-transform duration-500 group-hover:scale-[1.04] group-hover:opacity-75"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/38 to-transparent" />
           {item.badge ? (

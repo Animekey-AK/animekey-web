@@ -95,6 +95,12 @@
   }
 
 
+  /* Promo banner background shimmer */
+  @keyframes promoBg {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.85; }
+  }
+
   /* Streaming layout utilities */
   .aspect-poster {
     aspect-ratio: 2 / 3;

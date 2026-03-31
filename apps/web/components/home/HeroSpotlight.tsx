@@ -32,13 +32,6 @@ const slideBackgrounds: Record<
   },
 };
 
-const slideIcons: Record<"lime" | "purple" | "pink" | "amber", string> = {
-  lime: "⚔",
-  purple: "🌊",
-  pink: "💀",
-  amber: "✨",
-};
-
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function formatCountdown(s: number): string {
@@ -66,11 +59,7 @@ export function HeroSpotlight({ hero }: { hero: HeroCinematicData }) {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const curRef = useRef(0);
 
-  if (hero.status === "error" || hero.slides.length === 0) {
-    return null;
-  }
-
-  const slide = hero.slides[activeIndex];
+  const disabled = hero.status === "error" || hero.slides.length === 0;
 
   // ── goSlide ────────────────────────────────────────────────────────────────
 
@@ -220,6 +209,11 @@ export function HeroSpotlight({ hero }: { hero: HeroCinematicData }) {
   }, []);
 
   // ── Render ─────────────────────────────────────────────────────────────────
+
+  if (disabled) return null;
+
+  const slide = hero.slides[activeIndex];
+  if (!slide) return null;
 
   return (
     <section

@@ -53,9 +53,8 @@ export interface HeroCinematicData {
 // ── Proof strip ───────────────────────────────────────────────────────────────
 
 export interface ProofPoint {
-  title: string;
-  description: string;
-  media: MediaItem;
+  emoji: string;
+  stat: string;
 }
 
 export interface ProofStripData {
@@ -70,6 +69,7 @@ export interface RailData {
   variant: RailVariant;
   id: string;
   title: string;
+  titleBadge?: string;
   description?: string;
   href: string;
   items: ReadonlyArray<{
@@ -92,9 +92,10 @@ export interface PromoData {
   description: string;
   primaryCta: CallToAction;
   secondaryCta?: CallToAction;
-  media: MediaItem;
+  media?: MediaItem;
   /** ISO date string — renders a live countdown timer when set */
   countdownTarget?: string;
+  finePrint?: string;
 }
 
 // ── Top ranked ────────────────────────────────────────────────────────────────
@@ -132,7 +133,6 @@ export interface GenreChip {
   id: string;
   label: string;
   emoji: string;
-  href: string;
 }
 
 export interface GenreChipsData {
@@ -140,29 +140,37 @@ export interface GenreChipsData {
   items: ReadonlyArray<GenreChip>;
 }
 
-// ── Friction killer ───────────────────────────────────────────────────────────
+// ── Instant / friction killer ─────────────────────────────────────────────────
 
-export interface TrustSignal {
-  icon: string;
-  label: string;
+export interface InstantCard {
+  id: string;
+  title: string;
+  href: string;
+  emoji: string;
+  rating: string;
+  badge: string;
+  badgeVariant: "green" | "red";
+  colorVariant: "lime" | "purple" | "pink" | "amber" | "green-dark";
 }
 
 export interface FrictionKillerData {
   status: SectionStatus;
   headline: string;
-  subline?: string;
-  signals: ReadonlyArray<TrustSignal>;
-  cta: CallToAction;
-  liveCount?: number;
+  badge: string;
+  cards: ReadonlyArray<InstantCard>;
 }
 
 // ── Footer CTA ────────────────────────────────────────────────────────────────
 
 export interface FooterCtaData {
   status: SectionStatus;
+  eyebrow?: string;
   headline: string;
-  subline?: string;
+  headlineAccent?: string;
+  description?: string;
   cta: CallToAction;
+  secondaryCta?: CallToAction;
+  finePrint?: string;
 }
 
 // ── Homepage root ─────────────────────────────────────────────────────────────
