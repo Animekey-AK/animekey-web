@@ -12,6 +12,7 @@ export const routes = {
   home: withLocale("/"),
   movies: withLocale("/movies"),
   series: withLocale("/series"),
+  newAndHot: withLocale("/new-and-hot"),
   watch: (id: string) => withLocale(`/watch/${id}`),
   account: withLocale("/account"),
   login: withLocale("/login"),

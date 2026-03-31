@@ -18,7 +18,7 @@ const navLinks = [
   { label: "Home", href: routes.home },
   { label: "Movies", href: routes.movies },
   { label: "Series", href: routes.series },
-  { label: "New & Hot", href: routes.series },
+  { label: "New & Hot", href: routes.newAndHot },
 ];
 
 export function HomeHeader() {
