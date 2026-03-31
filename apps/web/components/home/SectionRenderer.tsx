@@ -1,5 +1,7 @@
 import { AppDownloadBand } from "./AppDownloadBand";
 import { ContentRail } from "./ContentRail";
+import { FrictionKiller } from "./FrictionKiller";
+import { GenreChips } from "./GenreChips";
 import { HeroSpotlight } from "./HeroSpotlight";
 import { PromoBanner } from "./PromoBanner";
 import { ProofStrip } from "./ProofStrip";
@@ -15,12 +17,16 @@ export function SectionRenderer({ sections }: { sections: HomeSection[] }) {
             return (
               <HeroSpotlight key={`hero-${index}`} hero={section.data} />
             );
+          case "genreChips":
+            return <GenreChips key={`genre-${index}`} section={section.data} />;
           case "proofStrip":
             return <ProofStrip key={`proof-${index}`} section={section.data} />;
           case "rails":
             return section.data.map((rail) => (
               <ContentRail key={rail.id} rail={rail} />
             ));
+          case "frictionKiller":
+            return <FrictionKiller key={`friction-${index}`} section={section.data} />;
           case "promoBanner":
             return <PromoBanner key={`promo-${index}`} promo={section.data} />;
           case "topRanked":

@@ -2,6 +2,8 @@ import { routes } from "@/constants/routes";
 
 import type {
   AppDownloadData,
+  FrictionKillerData,
+  GenreChipsData,
   HeroCinematicData,
   HomepageData,
   HomeSection,
@@ -100,6 +102,24 @@ const heroCinematic: HeroCinematicData = {
       modalDescription:
         "A centuries-old elf mage retraces a journey that meant nothing to her — and slowly learns what it means to feel.",
     },
+  ],
+};
+
+// ── Genre chips ───────────────────────────────────────────────────────────────
+
+const genreChips: GenreChipsData = {
+  status: ready,
+  items: [
+    { id: "action",       label: "Action",       emoji: "⚔️",  href: `${routes.series}?genre=action` },
+    { id: "romance",      label: "Romance",      emoji: "💕",  href: `${routes.series}?genre=romance` },
+    { id: "comedy",       label: "Comedy",       emoji: "😂",  href: `${routes.series}?genre=comedy` },
+    { id: "fantasy",      label: "Fantasy",      emoji: "🔮",  href: `${routes.series}?genre=fantasy` },
+    { id: "thriller",     label: "Thriller",     emoji: "🕵️", href: `${routes.series}?genre=thriller` },
+    { id: "sci-fi",       label: "Sci-Fi",       emoji: "🤖",  href: `${routes.series}?genre=sci-fi` },
+    { id: "horror",       label: "Horror",       emoji: "👹",  href: `${routes.series}?genre=horror` },
+    { id: "sports",       label: "Sports",       emoji: "🏆",  href: `${routes.series}?genre=sports` },
+    { id: "slice-of-life", label: "Slice of Life", emoji: "🌸", href: `${routes.series}?genre=slice-of-life` },
+    { id: "isekai",       label: "Isekai",       emoji: "🌀",  href: `${routes.series}?genre=isekai` },
   ],
 };
 
@@ -358,6 +378,26 @@ const topRanked: TopRankedData = {
   ],
 };
 
+// ── Friction killer ───────────────────────────────────────────────────────────
+
+const frictionKiller: FrictionKillerData = {
+  status: ready,
+  headline: "Start watching instantly.",
+  subline: "Join thousands of anime fans — no credit card needed to start.",
+  signals: [
+    { icon: "✓", label: "Free 7-day trial" },
+    { icon: "✓", label: "No credit card required" },
+    { icon: "✓", label: "Cancel anytime" },
+    { icon: "✓", label: "HD & 4K quality" },
+  ],
+  cta: {
+    label: "Watch free for 7 days",
+    href: routes.plans,
+    intent: "primary",
+  },
+  liveCount: 12_400,
+};
+
 // ── App download ──────────────────────────────────────────────────────────────
 
 const appDownload: AppDownloadData = {
@@ -393,18 +433,22 @@ const appDownload: AppDownloadData = {
 
 export const homepageData: HomepageData = {
   hero: heroCinematic,
+  genreChips,
   proofStrip,
   rails,
+  frictionKiller,
   promoBanner,
   topRanked,
   appDownload,
 };
 
 export const homeSections: HomeSection[] = [
-  { type: "hero", data: homepageData.hero },
-  { type: "proofStrip", data: homepageData.proofStrip },
-  { type: "rails", data: homepageData.rails },
-  { type: "promoBanner", data: homepageData.promoBanner },
-  { type: "topRanked", data: homepageData.topRanked },
-  { type: "appDownload", data: homepageData.appDownload },
+  { type: "hero",           data: homepageData.hero },
+  { type: "genreChips",    data: homepageData.genreChips },
+  { type: "proofStrip",    data: homepageData.proofStrip },
+  { type: "rails",         data: homepageData.rails },
+  { type: "frictionKiller", data: homepageData.frictionKiller },
+  { type: "promoBanner",   data: homepageData.promoBanner },
+  { type: "topRanked",     data: homepageData.topRanked },
+  { type: "appDownload",   data: homepageData.appDownload },
 ];

@@ -124,12 +124,44 @@ export interface AppDownloadData {
   media?: MediaItem;
 }
 
+// ── Genre chips ───────────────────────────────────────────────────────────────
+
+export interface GenreChip {
+  id: string;
+  label: string;
+  emoji: string;
+  href: string;
+}
+
+export interface GenreChipsData {
+  status: SectionStatus;
+  items: ReadonlyArray<GenreChip>;
+}
+
+// ── Friction killer ───────────────────────────────────────────────────────────
+
+export interface TrustSignal {
+  icon: string;
+  label: string;
+}
+
+export interface FrictionKillerData {
+  status: SectionStatus;
+  headline: string;
+  subline?: string;
+  signals: ReadonlyArray<TrustSignal>;
+  cta: CallToAction;
+  liveCount?: number;
+}
+
 // ── Homepage root ─────────────────────────────────────────────────────────────
 
 export interface HomepageData {
   hero: HeroCinematicData;
+  genreChips: GenreChipsData;
   proofStrip: ProofStripData;
   rails: ReadonlyArray<RailData>;
+  frictionKiller: FrictionKillerData;
   promoBanner: PromoData;
   topRanked: TopRankedData;
   appDownload: AppDownloadData;
@@ -141,12 +173,20 @@ export type HomeSection =
       data: HeroCinematicData;
     }
   | {
+      type: "genreChips";
+      data: GenreChipsData;
+    }
+  | {
       type: "proofStrip";
       data: ProofStripData;
     }
   | {
       type: "rails";
       data: ReadonlyArray<RailData>;
+    }
+  | {
+      type: "frictionKiller";
+      data: FrictionKillerData;
     }
   | {
       type: "promoBanner";
