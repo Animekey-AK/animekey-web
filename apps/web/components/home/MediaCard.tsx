@@ -86,6 +86,8 @@ export function MediaCard({
             className="object-cover opacity-60 transition-transform duration-500 group-hover:scale-[1.04] group-hover:opacity-75"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/38 to-transparent" />
+          {/* Aceternity-style shimmer sweep on hover */}
+          <div className="shimmer-sweep absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
           {item.badge ? (
             <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-black/60 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white/80 backdrop-blur-md">
               {item.badge}

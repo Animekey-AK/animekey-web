@@ -1,4 +1,5 @@
 import { AnimatedSection } from "./AnimatedSection";
+import { SpotlightSection } from "./SpotlightSection";
 import { AppDownloadBand } from "./AppDownloadBand";
 import { ContentRail } from "./ContentRail";
 import { FooterCta } from "./FooterCta";
@@ -40,7 +41,9 @@ export function SectionRenderer({ sections }: { sections: HomeSection[] }) {
           case "rails":
             return section.data.map((rail, ri) => (
               <AnimatedSection key={rail.id} delay={ri * 0.08}>
-                <ContentRail rail={rail} />
+                <SpotlightSection>
+                  <ContentRail rail={rail} />
+                </SpotlightSection>
               </AnimatedSection>
             ));
 

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 import type { FrictionKillerData, InstantCard } from "./types";
+import { TiltCard } from "./TiltCard";
 
 const gradients: Record<InstantCard["colorVariant"], string> = {
   lime:         "linear-gradient(145deg, #0c1c03, #050c01)",
@@ -48,7 +49,7 @@ export function FrictionKiller({ section }: Props) {
             data-analytics-id="home-instant-card"
             className="group shrink-0"
           >
-            <div className="w-[140px]">
+            <TiltCard className="w-[140px]">
               {/* Poster */}
               <div
                 className="relative flex h-[185px] w-[140px] flex-col items-center justify-center overflow-hidden rounded-[14px] border border-white/8"
@@ -96,7 +97,7 @@ export function FrictionKiller({ section }: Props) {
                 </p>
                 <p className="text-[11px] text-white/40">Free ep</p>
               </div>
-            </div>
+            </TiltCard>
           </Link>
           </motion.div>
         ))}
