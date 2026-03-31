@@ -6,9 +6,11 @@ interface Props {
   showSlug: string;
   totalEpisodes?: number;
   type?: "series" | "movie";
+  selectedEpisode?: number;
+  onSelectEpisode?: (episode: Episode) => void;
 }
 
-export function EpisodeList({ episodes, showSlug, totalEpisodes, type = "series" }: Props) {
+export function EpisodeList({ episodes, showSlug, totalEpisodes, type = "series", selectedEpisode, onSelectEpisode }: Props) {
   const remaining = totalEpisodes ? totalEpisodes - episodes.length : 0;
   const label = type === "movie" ? "The Film" : "Episodes";
 
@@ -28,7 +30,13 @@ export function EpisodeList({ episodes, showSlug, totalEpisodes, type = "series"
 
       <div className="flex gap-4 overflow-x-auto pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {episodes.map((episode) => (
-          <EpisodeCard key={episode.number} episode={episode} showSlug={showSlug} />
+          <EpisodeCard
+            key={episode.number}
+            episode={episode}
+            showSlug={showSlug}
+            isSelected={selectedEpisode === episode.number}
+            onSelect={onSelectEpisode}
+          />
         ))}
 
         {remaining > 0 && (

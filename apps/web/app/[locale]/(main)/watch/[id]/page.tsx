@@ -1,4 +1,4 @@
-import { ShowDetail } from "@/components/discovery/ShowDetail";
+import { WatchPageClient } from "@/components/player/WatchPageClient";
 import { catalogItems } from "@/components/discovery/catalog.data";
 import { getShow } from "@/components/discovery/show.data";
 
@@ -18,5 +18,5 @@ export default async function WatchPage({ params }: Props) {
     )
     .slice(0, 8);
 
-  return <ShowDetail show={show} relatedShows={relatedShows} />;
+  return <WatchPageClient show={show} relatedShows={relatedShows} />;
 }

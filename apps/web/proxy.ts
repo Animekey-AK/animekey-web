@@ -22,6 +22,9 @@ function stripLocalePrefix(pathname: string) {
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
+  // Dev bypass — skip auth guards so the player can be tested locally without a backend
+  if (process.env.NODE_ENV === "development") return NextResponse.next();
+
   const { pathname } = req.nextUrl;
   const localePrefix = getLocalePrefix(pathname);
   const normalizedPath = stripLocalePrefix(pathname);
