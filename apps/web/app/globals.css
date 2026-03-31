@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   AnimeKey Design Tokens — extracted from Figma (phone-site-animekey)
+   File key: bKqYIATfONzuflR0doUTNQ  |  Node: 1498-5404
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  :root {
+    /* Backgrounds — #070707 from Figma frames */
+    --background: oklch(0.05 0 0);          /* #070707 */
+    --foreground: oklch(1 0 0);             /* #ffffff */
+
+    /* Cards & surfaces — slight lifts above background */
+    --card: oklch(0.10 0 0);               /* ~#1a1a1a */
+    --card-foreground: oklch(1 0 0);
+    --popover: oklch(0.13 0 0);            /* ~#212121 */
+    --popover-foreground: oklch(1 0 0);
+
+    /* Brand primary — lime green #71C704 from Figma */
+    --primary: oklch(0.72 0.21 128);       /* #71C704 */
+    --primary-foreground: oklch(0.05 0 0); /* black text on green */
+
+    /* Secondary */
+    --secondary: oklch(0.15 0 0);
+    --secondary-foreground: oklch(0.85 0 0);
+
+    /* Muted — #555555 from Figma inactive/subdued elements */
+    --muted: oklch(0.15 0 0);
+    --muted-foreground: oklch(0.38 0 0);   /* #555555 */
+
+    /* Accent (hover states) */
+    --accent: oklch(0.18 0 0);
+    --accent-foreground: oklch(1 0 0);
+
+    /* Destructive */
+    --destructive: oklch(0.63 0.24 29);
+    --destructive-foreground: oklch(1 0 0);
+
+    /* Borders & inputs */
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 12%);
+    --ring: oklch(0.72 0.21 128 / 50%);   /* green ring */
+
+    /* Radius */
+    --radius: 0.5rem;
+
+    /* Sidebar */
+    --sidebar: oklch(0.10 0 0);
+    --sidebar-foreground: oklch(0.85 0 0);
+    --sidebar-primary: oklch(0.72 0.21 128);
+    --sidebar-primary-foreground: oklch(0.05 0 0);
+    --sidebar-accent: oklch(0.15 0 0);
+    --sidebar-accent-foreground: oklch(0.85 0 0);
+    --sidebar-border: oklch(1 0 0 / 8%);
+    --sidebar-ring: oklch(0.72 0.21 128 / 50%);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    background-image:
+      radial-gradient(circle at top, rgba(113, 199, 4, 0.08), transparent 22%),
+      linear-gradient(180deg, rgba(5, 5, 5, 1) 0%, rgba(8, 8, 8, 1) 100%);
+  }
+
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+
+  ::selection {
+    background: rgba(113, 199, 4, 0.3);
+    color: white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hero CTA pulse animation */
+  @keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(113, 199, 4, 0.45), 0 16px 48px rgba(113, 199, 4, 0.35); }
+    50%       { box-shadow: 0 0 0 12px rgba(113, 199, 4, 0), 0 20px 56px rgba(113, 199, 4, 0.35); }
+  }
+  .animate-cta-pulse {
+    animation: cta-pulse 2.4s ease-in-out infinite;
+  }
+
+
+  /* Card shimmer sweep (Aceternity-style) */
+  @keyframes shimmer-sweep {
+    0%   { transform: translateX(-100%) skewX(-12deg); }
+    100% { transform: translateX(300%) skewX(-12deg); }
+  }
+  .group:hover .shimmer-sweep {
+    animation: shimmer-sweep 0.75s ease-out forwards;
+  }
+
+  /* Promo banner background shimmer */
+  @keyframes promoBg {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.85; }
+  }
+
+  /* Streaming layout utilities */
+  .aspect-poster {
+    aspect-ratio: 2 / 3;
+  }
+
+  .aspect-thumbnail {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Font utilities for Figma-matched type */
+  .font-display {
+    font-family: var(--font-display), sans-serif; /* Anton */
+  }
+
+  .font-description {
+    font-family: var(--font-description), sans-serif; /* Montserrat */
+  }
+}
