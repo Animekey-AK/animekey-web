@@ -6,6 +6,8 @@ import { env } from "./env.server";
 // ─── Backend API response shapes ─────────────────────────────────────────────
 
 interface ApiEpisode {
+  _id?: string;
+  videoId?: string;
   episodeNumber: number;
   title: string;
   duration?: number; // seconds
@@ -50,6 +52,7 @@ function mapEpisode(ep: ApiEpisode, fallbackImage: string): Episode {
     description: ep.description ?? "",
     isFree: ep.isFree,
     imageSrc: ep.thumbnailUrl ?? fallbackImage,
+    videoId: ep.videoId ?? ep._id,
   };
 }
 
@@ -73,6 +76,8 @@ function mapShow(raw: ApiShow): ShowDetail {
     backdropSrc: raw.backdropUrl ?? poster,
     type: raw.type,
     episodes,
+    contentId: raw._id,
+    hasFreeEpisodes: episodes.some((ep) => ep.isFree),
   };
 }
 

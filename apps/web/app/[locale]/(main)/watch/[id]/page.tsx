@@ -10,7 +10,7 @@ interface Props {
 
 export default async function WatchPage({ params }: Props) {
   const { id } = await params;
-  await auth();
+  const session = await auth();
 
   // Try real API first; fall back to mock data during transition
   const show = (await fetchShow(id)) ?? getShow(id);
@@ -23,5 +23,5 @@ export default async function WatchPage({ params }: Props) {
     )
     .slice(0, 8);
 
-  return <WatchPageClient show={show} relatedShows={relatedShows} />;
+  return <WatchPageClient show={show} relatedShows={relatedShows} isGuest={!session?.user} />;
 }
