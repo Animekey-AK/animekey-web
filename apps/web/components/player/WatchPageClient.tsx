@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 import { AnimatedSection } from "@/components/home/AnimatedSection";
 import { cn } from "@/lib/utils";
@@ -21,6 +20,7 @@ const RESUME_DEBOUNCE_MS = 5000;
 interface Props {
   show: ShowDetail;
   relatedShows: ReadonlyArray<CatalogItem>;
+  isGuest?: boolean;
 }
 
 function getResumeKey(showSlug: string, episodeNumber: number) {
@@ -44,9 +44,7 @@ function saveResumeTime(showSlug: string, episodeNumber: number, time: number) {
   }
 }
 
-export function WatchPageClient({ show, relatedShows }: Props) {
-  const { data: session, status } = useSession();
-  const isGuest = status !== "loading" && !session?.user;
+export function WatchPageClient({ show, relatedShows, isGuest = false }: Props) {
   const router = useRouter();
 
   const [activeEpisode, setActiveEpisode] = useState<Episode>(show.episodes[0]);
@@ -55,6 +53,7 @@ export function WatchPageClient({ show, relatedShows }: Props) {
     readResumeTime(show.slug, show.episodes[0]?.number ?? 1),
   );
   const [streamUrl, setStreamUrl] = useState<string | null>(null);
+  const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [accessDenied, setAccessDenied] = useState(false);
   const [denialReason, setDenialReason] = useState<
     "auth_required" | "subscription_required" | null
@@ -94,6 +93,7 @@ export function WatchPageClient({ show, relatedShows }: Props) {
             setAccessDenied(true);
             setDenialReason(result.reason);
             setStreamUrl(result.trailer?.url ?? null);
+            setTrailerUrl(result.trailer?.url ?? null);
             return;
           }
           setStreamUrl(result.hls.url);
