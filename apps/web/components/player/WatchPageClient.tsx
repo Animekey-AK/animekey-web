@@ -1,21 +1,20 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import { AnimatedSection } from "@/components/home/AnimatedSection";
 import { cn } from "@/lib/utils";
 import { routes } from "@/constants/routes";
+import { playEpisode, playMovie } from "@/actions/play";
 
 import { CatalogCard } from "../discovery/CatalogCard";
 import { EpisodeList } from "../discovery/EpisodeList";
 import type { CatalogItem } from "../discovery/catalog.data";
 import type { Episode, ShowDetail } from "../discovery/show.data";
 import { VideoPlayer } from "./VideoPlayer";
-
-// Dev placeholder — Apple's public HLS test stream
-const DEV_STREAM =
-  "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8";
 
 const RESUME_DEBOUNCE_MS = 5000;
 
@@ -46,11 +45,21 @@ function saveResumeTime(showSlug: string, episodeNumber: number, time: number) {
 }
 
 export function WatchPageClient({ show, relatedShows }: Props) {
+  const { data: session, status } = useSession();
+  const isGuest = status !== "loading" && !session?.user;
+  const router = useRouter();
+
   const [activeEpisode, setActiveEpisode] = useState<Episode>(show.episodes[0]);
   const [language, setLanguage] = useState<"sub" | "dub">("sub");
   const [initialTime, setInitialTime] = useState(() =>
     readResumeTime(show.slug, show.episodes[0]?.number ?? 1),
   );
+  const [streamUrl, setStreamUrl] = useState<string | null>(null);
+  const [accessDenied, setAccessDenied] = useState(false);
+  const [denialReason, setDenialReason] = useState<
+    "auth_required" | "subscription_required" | null
+  >(null);
+  const [isLoadingStream, setIsLoadingStream] = useState(false);
 
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -64,25 +73,75 @@ export function WatchPageClient({ show, relatedShows }: Props) {
     [show.slug, activeEpisode.number],
   );
 
-  const handleSelectEpisode = useCallback(
-    (episode: Episode) => {
-      if (!episode.isFree) {
-        // Scroll to paywall strip — don't switch player
-        document.getElementById("paywall-strip")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  const fetchStream = useCallback(
+    async (episode: Episode) => {
+      // Optimistic gate: guest + premium episode → send to sign in immediately (no round trip)
+      if (!episode.isFree && isGuest) {
+        router.push(
+          `${routes.login}?returnUrl=${encodeURIComponent(window.location.pathname)}`,
+        );
         return;
       }
+
+      setIsLoadingStream(true);
+      setAccessDenied(false);
+
+      try {
+        if (show.type === "movie" && show.contentId) {
+          const result = await playMovie(show.contentId);
+          if ("error" in result) return;
+          if (!result.granted) {
+            setAccessDenied(true);
+            setDenialReason(result.reason);
+            setStreamUrl(result.trailer?.url ?? null);
+            return;
+          }
+          setStreamUrl(result.hls.url);
+        } else if (episode.videoId) {
+          const result = await playEpisode(episode.videoId);
+          if ("error" in result) return;
+          if (!result.granted) {
+            if (result.reason === "auth_required") {
+              router.push(
+                `${routes.login}?returnUrl=${encodeURIComponent(window.location.pathname)}`,
+              );
+              return;
+            }
+            // subscription_required — scroll to paywall
+            document
+              .getElementById("paywall-strip")
+              ?.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+          }
+          setStreamUrl(result.hls.url);
+        }
+      } finally {
+        setIsLoadingStream(false);
+      }
+    },
+    [show, isGuest, router],
+  );
+
+  const handleSelectEpisode = useCallback(
+    (episode: Episode) => {
       setActiveEpisode(episode);
       setInitialTime(readResumeTime(show.slug, episode.number));
+      fetchStream(episode);
     },
-    [show.slug],
+    [show.slug, fetchStream],
   );
+
+  useEffect(() => {
+    fetchStream(show.episodes[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl px-4 py-6 md:px-8 md:py-10">
       {/* Player */}
       <AnimatedSection delay={0}>
         <VideoPlayer
-          src={DEV_STREAM}
+          src={streamUrl ?? ""}
           poster={activeEpisode?.imageSrc}
           title={activeEpisode ? `${show.title} — ${activeEpisode.title}` : show.title}
           language={language}
@@ -90,6 +149,30 @@ export function WatchPageClient({ show, relatedShows }: Props) {
           onTimeUpdate={handleTimeUpdate}
         />
       </AnimatedSection>
+
+      {/* Movie access-denied overlay */}
+      {accessDenied && show.type === "movie" && (
+        <div className="relative -mt-4">
+          <div className="absolute inset-0 flex items-end justify-center pb-12 z-10">
+            <div className="rounded-2xl border border-white/10 bg-black/80 p-6 text-center backdrop-blur-sm max-w-sm w-full mx-4">
+              <p className="mb-1 text-base font-bold text-foreground">
+                {denialReason === "auth_required" ? "Sign in to watch" : "Subscribe to watch"}
+              </p>
+              <p className="mb-4 text-sm text-foreground/60">
+                {denialReason === "auth_required"
+                  ? "Create a free account to access premium content"
+                  : "Unlimited anime, starting at $4.99/month"}
+              </p>
+              <Link
+                href={denialReason === "auth_required" ? routes.login : routes.plans}
+                className="inline-block rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:bg-primary/90"
+              >
+                {denialReason === "auth_required" ? "Sign in" : "See plans"}
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Episode info */}
       {activeEpisode && (
