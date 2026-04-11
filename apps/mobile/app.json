@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "AnimeKey",
+    "slug": "animekey",
+    "scheme": "animekey",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#070707"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.animekey.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#070707"
+      },
+      "package": "com.animekey.app"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-font",
+        {
+          "fonts": []
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
