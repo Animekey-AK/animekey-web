@@ -8,8 +8,10 @@ import {
 } from "@/features/auth/api/auth";
 import { AuthButton } from "@/features/auth/components/AuthButton";
 import { authSession } from "@/features/auth/lib/auth-session";
+import { useDevModeValue } from "@/core/dev/useDevModeValue";
 
 export default function OnboardingScreen() {
+  const { mockApi } = useDevModeValue();
   const [isGuestPending, setIsGuestPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,7 +20,9 @@ export default function OnboardingScreen() {
       setError(null);
       setIsGuestPending(true);
 
-      const response = await createGuestSession();
+      const response = mockApi
+        ? await require("@/core/dev/mock-auth").mockCreateGuestSession()
+        : await createGuestSession();
       const { authToken, refreshToken, isGuest = true, nextStep } =
         response.result;
 

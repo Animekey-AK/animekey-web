@@ -1,6 +1,8 @@
 import { Modal, Pressable, Text, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { OtpInput } from "react-native-otp-entry";
+import type { OtpInputRef } from "react-native-otp-entry";
 import { AuthButton } from "@/features/auth/components/AuthButton";
-import { AuthField } from "@/features/auth/components/AuthField";
 
 interface AuthOtpModalProps {
   visible: boolean;
@@ -25,6 +27,16 @@ export function AuthOtpModal({
   onSubmit,
   onResend,
 }: AuthOtpModalProps) {
+  const otpRef = useRef<OtpInputRef>(null);
+
+  // OtpInput is uncontrolled — parent reads digits via onTextChange and
+  // resets by setting code to "". We only handle the clear case here;
+  // OtpInput handles iOS SMS autofill internally.
+  useEffect(() => {
+    if (!code) {
+      otpRef.current?.clear();
+    }
+  }, [code]);
   return (
     <Modal
       animationType="fade"
@@ -46,19 +58,53 @@ export function AuthOtpModal({
           <View className="mt-5 gap-4">
             {error ? (
               <View className="rounded-[18px] border border-red-400/40 bg-[#391216] px-4 py-3">
-                <Text className="text-[13px] leading-5 text-red-100">{error}</Text>
+                <Text className="text-[13px] leading-5 text-red-100">
+                  {error}
+                </Text>
               </View>
             ) : null}
 
-            <AuthField
-              autoFocus
-              keyboardType="number-pad"
-              label="Verification code"
-              maxLength={4}
-              onChangeText={onChangeCode}
-              placeholder="0000"
-              value={code}
-            />
+            <View>
+              <Text className="mb-2 text-[13px] font-medium text-white/70">
+                Verification code
+              </Text>
+              <OtpInput
+                ref={otpRef}
+                numberOfDigits={4}
+                onTextChange={onChangeCode}
+                autoFocus
+                type="numeric"
+                focusStickBlinkingDuration={500}
+                theme={{
+                  pinCodeContainerStyle: {
+                    width: 56,
+                    height: 56,
+                    borderRadius: 18,
+                    borderWidth: 1,
+                    borderColor: error
+                      ? "rgba(248, 113, 113, 0.8)"
+                      : "rgba(255, 255, 255, 0.2)",
+                    backgroundColor: "rgba(0, 0, 0, 0.7)",
+                  },
+                  focusedPinCodeContainerStyle: {
+                    borderColor: error
+                      ? "rgba(248, 113, 113, 0.8)"
+                      : "rgba(113, 199, 4, 0.8)",
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  },
+                  pinCodeTextStyle: {
+                    fontSize: 18,
+                    fontWeight: "600",
+                    color: "#ffffff",
+                  },
+                  focusStickStyle: {
+                    backgroundColor: "#71C704",
+                    width: 2,
+                    height: 24,
+                  },
+                }}
+              />
+            </View>
 
             <AuthButton
               label="Verify code"

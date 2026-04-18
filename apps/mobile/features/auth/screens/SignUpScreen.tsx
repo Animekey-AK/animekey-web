@@ -20,6 +20,7 @@ import { AuthOtpModal } from "@/features/auth/components/AuthOtpModal";
 import { AuthScaffold } from "@/features/auth/components/AuthScaffold";
 import { AuthSelectField } from "@/features/auth/components/AuthSelectField";
 import { authSession } from "@/features/auth/lib/auth-session";
+import { useDevModeValue } from "@/core/dev/useDevModeValue";
 import { cn } from "@/shared/lib/cn";
 
 const TERMS_AND_CONDITIONS_URL =
@@ -154,6 +155,7 @@ function isAtLeastMinimumAge(day: string, month: string, year: string) {
 }
 
 export default function SignUpScreen() {
+  const { mockApi } = useDevModeValue();
   // const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -304,15 +306,17 @@ export default function SignUpScreen() {
 
     try {
       setIsPending(true);
-      const temporaryToken = await signUpWithPassword({
-        firstName,
-        lastName,
-        email,
-        password,
-        birthDay,
-        birthMonth,
-        birthYear,
-      });
+      const temporaryToken = mockApi
+        ? await require("@/core/dev/mock-auth").mockSignUpWithPassword()
+        : await signUpWithPassword({
+            firstName,
+            lastName,
+            email,
+            password,
+            birthDay,
+            birthMonth,
+            birthYear,
+          });
 
       if (!temporaryToken) {
         setError("We couldn't start verification for this account.");
@@ -377,10 +381,12 @@ export default function SignUpScreen() {
 
     try {
       setIsOtpPending(true);
-      const response = await verifySignUpOtp(
-        otpCode.trim(),
-        pendingSignup.temporaryToken,
-      );
+      const response = mockApi
+        ? await require("@/core/dev/mock-auth").mockVerifySignUpOtp()
+        : await verifySignUpOtp(
+            otpCode.trim(),
+            pendingSignup.temporaryToken,
+          );
       const { authToken, refreshToken } = response.result;
 
       if (!authToken || !refreshToken) {
@@ -416,7 +422,11 @@ export default function SignUpScreen() {
 
     try {
       setIsOtpPending(true);
-      await resendSignUpOtp(pendingSignup.temporaryToken);
+      if (mockApi) {
+        await require("@/core/dev/mock-auth").mockResendSignUpOtp();
+      } else {
+        await resendSignUpOtp(pendingSignup.temporaryToken);
+      }
     } catch (resendError) {
       setOtpError(
         getAuthErrorMessage(resendError, "Couldn't resend the code right now."),

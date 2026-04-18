@@ -9,5 +9,18 @@ interface AppProvidersProps {
 }
 
 export function AppProviders({ children }: AppProvidersProps) {
+  if (__DEV__) {
+    const { DevModeProvider } = require("@/core/dev/DevModeContext");
+    const { DevToolbar } = require("@/core/dev/DevToolbar");
+    return (
+      <SafeAreaProvider>
+        <DevModeProvider>
+          {children}
+          <DevToolbar />
+        </DevModeProvider>
+      </SafeAreaProvider>
+    );
+  }
+
   return <SafeAreaProvider>{children}</SafeAreaProvider>;
 }
