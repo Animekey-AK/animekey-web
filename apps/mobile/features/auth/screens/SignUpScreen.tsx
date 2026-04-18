@@ -20,6 +20,7 @@ import { AuthOtpModal } from "@/features/auth/components/AuthOtpModal";
 import { AuthScaffold } from "@/features/auth/components/AuthScaffold";
 import { AuthSelectField } from "@/features/auth/components/AuthSelectField";
 import { authSession } from "@/features/auth/lib/auth-session";
+import { useDevModeValue } from "@/core/dev/useDevModeValue";
 import { cn } from "@/shared/lib/cn";
 
 const TERMS_AND_CONDITIONS_URL =
@@ -154,9 +155,7 @@ function isAtLeastMinimumAge(day: string, month: string, year: string) {
 }
 
 export default function SignUpScreen() {
-  const { mockApi } = __DEV__
-    ? require("@/core/dev/DevModeContext").useDevMode()
-    : { mockApi: false };
+  const { mockApi } = useDevModeValue();
   // const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

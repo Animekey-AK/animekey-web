@@ -9,11 +9,10 @@ import { AuthButton } from "@/features/auth/components/AuthButton";
 import { AuthField } from "@/features/auth/components/AuthField";
 import { AuthScaffold } from "@/features/auth/components/AuthScaffold";
 import { authSession } from "@/features/auth/lib/auth-session";
+import { useDevModeValue } from "@/core/dev/useDevModeValue";
 
 export default function SignInScreen() {
-  const { mockApi } = __DEV__
-    ? require("@/core/dev/DevModeContext").useDevMode()
-    : { mockApi: false };
+  const { mockApi } = useDevModeValue();
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isPending, setIsPending] = useState(false);

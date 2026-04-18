@@ -8,11 +8,10 @@ import {
 } from "@/features/auth/api/auth";
 import { AuthButton } from "@/features/auth/components/AuthButton";
 import { authSession } from "@/features/auth/lib/auth-session";
+import { useDevModeValue } from "@/core/dev/useDevModeValue";
 
 export default function OnboardingScreen() {
-  const { mockApi } = __DEV__
-    ? require("@/core/dev/DevModeContext").useDevMode()
-    : { mockApi: false };
+  const { mockApi } = useDevModeValue();
   const [isGuestPending, setIsGuestPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
