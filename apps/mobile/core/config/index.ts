@@ -1,6 +1,10 @@
+import { Platform } from "react-native";
+
+const DEV_API_HOST = Platform.OS === "android" ? "10.0.2.2" : "localhost";
+
 const ENV = {
   dev: {
-    apiBaseUrl: "http://localhost:9001",
+    apiBaseUrl: `http://${DEV_API_HOST}:9001`,
   },
   staging: {
     apiBaseUrl: "https://api-staging.animekey.tv",

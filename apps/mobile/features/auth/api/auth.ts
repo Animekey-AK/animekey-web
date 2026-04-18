@@ -39,7 +39,7 @@ export interface VerifySignUpResult {
 interface SignUpInput {
   firstName: string;
   lastName: string;
-  emailOrPhone: string;
+  email: string;
   password: string;
   birthDay: string;
   birthMonth: string;
@@ -96,14 +96,11 @@ function buildBearerHeaders(token: string) {
   return buildHeaders(`Bearer ${token}`);
 }
 
-function buildIdentifierPayload(emailOrPhone: string): CredentialPayload {
-  return buildCredentialPayload(emailOrPhone);
+function buildIdentifierPayload(email: string): CredentialPayload {
+  return buildCredentialPayload(email);
 }
 
-export function getAuthErrorMessage(
-  error: unknown,
-  fallbackMessage: string,
-) {
+export function getAuthErrorMessage(error: unknown, fallbackMessage: string) {
   if (error instanceof ApiError && error.message) {
     return error.message;
   }
@@ -125,14 +122,11 @@ export async function createGuestSession() {
   );
 }
 
-export async function signInWithPassword(
-  emailOrPhone: string,
-  password: string,
-) {
+export async function signInWithPassword(identifier: string, password: string) {
   return apiClient.patch<ApiResponse<SessionAuthResult>>(
     AUTH_ENDPOINTS.signIn,
     {
-      ...buildIdentifierPayload(emailOrPhone),
+      ...buildIdentifierPayload(identifier),
       password,
     },
     {
@@ -142,14 +136,15 @@ export async function signInWithPassword(
 }
 
 export async function signUpWithPassword(input: SignUpInput) {
-  return apiClient.post<ApiResponse<string>>(
+  console.log("Signing up with input:", input);
+  const response = await apiClient.post<ApiResponse<string>>(
     AUTH_ENDPOINTS.signUp,
     {
       name: {
         first: input.firstName.trim(),
         last: input.lastName.trim(),
       },
-      ...buildIdentifierPayload(input.emailOrPhone),
+      ...buildIdentifierPayload(input.email),
       password: input.password,
       dob: buildDobValue(input.birthDay, input.birthMonth, input.birthYear),
     },
@@ -157,6 +152,10 @@ export async function signUpWithPassword(input: SignUpInput) {
       headers: buildBasicHeaders(),
     },
   );
+
+  console.log("Sign-up response:", response);
+
+  return response.result;
 }
 
 export async function verifySignUpOtp(otpCode: string, temporaryToken: string) {

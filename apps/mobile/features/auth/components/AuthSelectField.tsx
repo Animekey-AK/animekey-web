@@ -25,17 +25,26 @@ export function AuthSelectField({
       <Pressable
         className={cn(
           "h-14 flex-row items-center justify-between rounded-[18px] border px-4",
-          error ? "border-red-400/80 bg-black/75" : "border-white/20 bg-black/70",
+          error
+            ? "border-red-400/80 bg-black/75"
+            : "border-white/20 bg-black/70",
         )}
         onPress={onPress}
       >
-        <Text className={cn("text-[16px] font-medium", value ? "text-white" : "text-white/50")}>
+        <Text
+          className={cn(
+            "text-[16px] font-medium",
+            value ? "text-white" : "text-white/50",
+          )}
+        >
           {value ?? placeholder}
         </Text>
         <Text className="text-[16px] text-white/50">v</Text>
       </Pressable>
 
-      {error ? <Text className="text-[12px] leading-5 text-red-300">{error}</Text> : null}
+      {error ? (
+        <Text className="text-[12px] leading-5 text-red-400">{error}</Text>
+      ) : null}
     </View>
   );
 }

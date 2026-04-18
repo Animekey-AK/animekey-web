@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Linking, Modal, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Linking,
+  Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { router } from "expo-router";
 import {
   getAuthErrorMessage,
@@ -13,8 +20,10 @@ import { AuthOtpModal } from "@/features/auth/components/AuthOtpModal";
 import { AuthScaffold } from "@/features/auth/components/AuthScaffold";
 import { AuthSelectField } from "@/features/auth/components/AuthSelectField";
 import { authSession } from "@/features/auth/lib/auth-session";
+import { cn } from "@/shared/lib/cn";
 
-const TERMS_AND_CONDITIONS_URL = "https://animekey.tv/static-content/terms-and-conditions";
+const TERMS_AND_CONDITIONS_URL =
+  "https://animekey.tv/static-content/terms-and-conditions";
 const MONTH_OPTIONS = [
   { value: "01", label: "January", shortLabel: "Jan" },
   { value: "02", label: "February", shortLabel: "Feb" },
@@ -73,7 +82,11 @@ function sanitizeDobSelection(day: string, month: string, year: string) {
   let nextMonth = month;
   let nextDay = day;
 
-  if (numericYear === MAX_ALLOWED_YEAR && nextMonth && Number(nextMonth) > MAX_ALLOWED_MONTH) {
+  if (
+    numericYear === MAX_ALLOWED_YEAR &&
+    nextMonth &&
+    Number(nextMonth) > MAX_ALLOWED_MONTH
+  ) {
     nextMonth = "";
     nextDay = "";
   }
@@ -92,6 +105,30 @@ function sanitizeDobSelection(day: string, month: string, year: string) {
   }
 
   return { day: nextDay, month: nextMonth, year };
+}
+
+function getPasswordStrengthError(password: string): string | null {
+  if (password.length < 8) {
+    return "Password must be at least 8 characters.";
+  }
+
+  if (!/[A-Z]/.test(password)) {
+    return "Password must include an uppercase letter.";
+  }
+
+  if (!/[a-z]/.test(password)) {
+    return "Password must include a lowercase letter.";
+  }
+
+  if (!/\d/.test(password)) {
+    return "Password must include a number.";
+  }
+
+  if (!/[^A-Za-z0-9]/.test(password)) {
+    return "Password must include a special character.";
+  }
+
+  return null;
 }
 
 function isAtLeastMinimumAge(day: string, month: string, year: string) {
@@ -117,9 +154,10 @@ function isAtLeastMinimumAge(day: string, month: string, year: string) {
 }
 
 export default function SignUpScreen() {
+  // const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [emailOrPhone, setEmailOrPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [birthDay, setBirthDay] = useState("");
@@ -134,6 +172,19 @@ export default function SignUpScreen() {
   const [isOtpVisible, setIsOtpVisible] = useState(false);
   const [isOtpPending, setIsOtpPending] = useState(false);
 
+  const [fieldErrors, setFieldErrors] = useState({
+    // username: null as string | null,
+    firstName: null as string | null,
+    lastName: null as string | null,
+    email: null as string | null,
+    password: null as string | null,
+    confirmPassword: null as string | null,
+    day: null as string | null,
+    month: null as string | null,
+    year: null as string | null,
+    terms: null as string | null,
+  });
+
   const numericBirthYear = birthYear ? Number(birthYear) : null;
   const numericBirthMonth = birthMonth ? Number(birthMonth) : null;
   const monthOptions: DobOption[] = MONTH_OPTIONS.filter((option) => {
@@ -145,8 +196,12 @@ export default function SignUpScreen() {
   }).map(({ value, label, shortLabel }) => ({ value, label, shortLabel }));
   const maxSelectableDay =
     numericBirthYear && numericBirthMonth
-      ? numericBirthYear === MAX_ALLOWED_YEAR && numericBirthMonth === MAX_ALLOWED_MONTH
-        ? Math.min(getDaysInMonth(numericBirthYear, numericBirthMonth), MAX_ALLOWED_DAY)
+      ? numericBirthYear === MAX_ALLOWED_YEAR &&
+        numericBirthMonth === MAX_ALLOWED_MONTH
+        ? Math.min(
+            getDaysInMonth(numericBirthYear, numericBirthMonth),
+            MAX_ALLOWED_DAY,
+          )
         : getDaysInMonth(numericBirthYear, numericBirthMonth)
       : 31;
   const dayOptions = buildDayOptions(maxSelectableDay);
@@ -174,6 +229,12 @@ export default function SignUpScreen() {
     year: YEAR_OPTIONS.find((option) => option.value === birthYear),
   };
 
+  const clearFieldError = (field: keyof typeof fieldErrors) => {
+    if (fieldErrors[field]) {
+      setFieldErrors((prev) => ({ ...prev, [field]: null }));
+    }
+  };
+
   const pendingSignup = authSession.getPendingSignup();
 
   const handleOpenTerms = async () => {
@@ -194,61 +255,73 @@ export default function SignUpScreen() {
   const handleCreateAccount = async () => {
     setError(null);
 
-    if (!firstName.trim() || !lastName.trim()) {
-      setError("Add your first and last name.");
-      return;
+    const passwordStrengthError = password.trim()
+      ? getPasswordStrengthError(password)
+      : null;
+
+    const nextFieldErrors = {
+      // username: !username.trim() ? "Username is required." : null,
+      firstName: !firstName.trim() ? "First name is required." : null,
+      lastName: !lastName.trim() ? "Last name is required." : null,
+      email: !email.trim() ? "Email is required." : null,
+      password: !password.trim()
+        ? "Password is required."
+        : passwordStrengthError,
+      confirmPassword: !confirmPassword.trim()
+        ? "Please confirm your password."
+        : null,
+      day: !birthDay.trim() ? "Please select a day." : null,
+      month: !birthMonth.trim() ? "Please select a month." : null,
+      year: !birthYear.trim() ? "Please select a year." : null,
+      terms: !acceptedTerms ? "You must accept the terms to continue." : null,
+    };
+
+    if (
+      !nextFieldErrors.password &&
+      password.trim() &&
+      confirmPassword.trim() &&
+      password !== confirmPassword
+    ) {
+      nextFieldErrors.confirmPassword = "Passwords do not match.";
     }
 
-    if (!emailOrPhone.trim()) {
-      setError("Enter your email or phone number.");
-      return;
-    }
+    setFieldErrors(nextFieldErrors);
 
-    if (!password.trim() || !confirmPassword.trim()) {
-      setError("Create and confirm your password.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    if (!birthDay.trim() || !birthMonth.trim() || !birthYear.trim()) {
-      setError("Enter your date of birth.");
+    if (Object.values(nextFieldErrors).some(Boolean)) {
       return;
     }
 
     if (!isAtLeastMinimumAge(birthDay, birthMonth, birthYear)) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        day: "Invalid date",
+        month: "Invalid date",
+        year: "Invalid date",
+      }));
       setError("You must be 18 years or older to create an account.");
-      return;
-    }
-
-    if (!acceptedTerms) {
-      setError("Accept the terms to create your account.");
       return;
     }
 
     try {
       setIsPending(true);
-      const response = await signUpWithPassword({
+      const temporaryToken = await signUpWithPassword({
         firstName,
         lastName,
-        emailOrPhone,
+        email,
         password,
         birthDay,
         birthMonth,
         birthYear,
       });
 
-      if (!response.result) {
+      if (!temporaryToken) {
         setError("We couldn't start verification for this account.");
         return;
       }
 
       authSession.setPendingSignup({
-        temporaryToken: response.result,
-        destination: emailOrPhone.trim(),
+        temporaryToken,
+        destination: email.trim(),
       });
       setOtpCode("");
       setOtpError(null);
@@ -275,6 +348,10 @@ export default function SignUpScreen() {
     setBirthDay(nextDob.day);
     setBirthMonth(nextDob.month);
     setBirthYear(nextDob.year);
+    setFieldErrors((prev) => ({
+      ...prev,
+      [field]: null,
+    }));
     setActiveDobField(null);
   };
 
@@ -307,7 +384,9 @@ export default function SignUpScreen() {
       const { authToken, refreshToken } = response.result;
 
       if (!authToken || !refreshToken) {
-        setOtpError("Verification worked, but the session response was incomplete.");
+        setOtpError(
+          "Verification worked, but the session response was incomplete.",
+        );
         return;
       }
 
@@ -320,10 +399,7 @@ export default function SignUpScreen() {
       router.replace("/(tabs)/home");
     } catch (verifyError) {
       setOtpError(
-        getAuthErrorMessage(
-          verifyError,
-          "Couldn't verify your code.",
-        ),
+        getAuthErrorMessage(verifyError, "Couldn't verify your code."),
       );
     } finally {
       setIsOtpPending(false);
@@ -343,10 +419,7 @@ export default function SignUpScreen() {
       await resendSignUpOtp(pendingSignup.temporaryToken);
     } catch (resendError) {
       setOtpError(
-        getAuthErrorMessage(
-          resendError,
-          "Couldn't resend the code right now.",
-        ),
+        getAuthErrorMessage(resendError, "Couldn't resend the code right now."),
       );
     } finally {
       setIsOtpPending(false);
@@ -356,7 +429,7 @@ export default function SignUpScreen() {
   return (
     <>
       <AuthScaffold
-        eyebrow="Create account"
+        // eyebrow="Create account"
         title="Create your account"
         description="Save shows, build your watchlist, and keep your profile in sync."
         footer={
@@ -378,57 +451,108 @@ export default function SignUpScreen() {
           </View>
         ) : null}
 
-        <View className="flex-row gap-3">
-          <AuthField
-            autoComplete="given-name"
-            containerClassName="flex-1"
-            label="First name"
-            onChangeText={setFirstName}
-            placeholder="First name"
-            value={firstName}
-          />
-          <AuthField
-            autoComplete="family-name"
-            containerClassName="flex-1"
-            label="Last name"
-            onChangeText={setLastName}
-            placeholder="Last name"
-            value={lastName}
-          />
-        </View>
+        {/* <AuthField
+          autoCapitalize="none"
+          autoComplete="nickname"
+          placeholder="Enter your username"
+          label="Username"
+          onChangeText={(text) => {
+            setUsername(text);
+            clearFieldError("username");
+          }}
+          value={username}
+          error={fieldErrors.username ?? undefined}
+        /> */}
+
+        <AuthField
+          autoCapitalize="words"
+          autoComplete="given-name"
+          placeholder="Enter your first name"
+          label="First name"
+          onChangeText={(text) => {
+            setFirstName(text);
+            clearFieldError("firstName");
+          }}
+          value={firstName}
+          error={fieldErrors.firstName ?? undefined}
+        />
+
+        <AuthField
+          autoCapitalize="words"
+          autoComplete="family-name"
+          placeholder="Enter your last name"
+          label="Last name"
+          onChangeText={(text) => {
+            setLastName(text);
+            clearFieldError("lastName");
+          }}
+          value={lastName}
+          error={fieldErrors.lastName ?? undefined}
+        />
 
         <AuthField
           autoCapitalize="none"
           autoComplete="email"
           keyboardType="email-address"
-          label="Email or phone"
-          onChangeText={setEmailOrPhone}
-          placeholder="Enter email or phone number"
-          value={emailOrPhone}
+          label="Email"
+          onChangeText={(text) => {
+            setEmail(text);
+            clearFieldError("email");
+          }}
+          placeholder="Enter your email"
+          value={email}
+          error={fieldErrors.email ?? undefined}
         />
 
         <AuthField
-          autoComplete="new-password"
+          autoComplete="off"
+          textContentType="none"
           label="Password"
-          onChangeText={setPassword}
+          onChangeText={(text) => {
+            setPassword(text);
+            setFieldErrors((prev) => ({
+              ...prev,
+              password: text.trim() ? getPasswordStrengthError(text) : null,
+              confirmPassword:
+                prev.confirmPassword &&
+                confirmPassword.trim() &&
+                text === confirmPassword
+                  ? null
+                  : prev.confirmPassword,
+            }));
+          }}
           placeholder="Create password"
           revealable
           secureTextEntry
           value={password}
+          error={fieldErrors.password ?? undefined}
         />
 
         <AuthField
-          autoComplete="new-password"
+          autoComplete="off"
+          textContentType="none"
           label="Confirm password"
-          onChangeText={setConfirmPassword}
+          onChangeText={(text) => {
+            setConfirmPassword(text);
+            setFieldErrors((prev) => ({
+              ...prev,
+              confirmPassword:
+                prev.confirmPassword && text.trim() && text === password
+                  ? null
+                  : prev.confirmPassword,
+            }));
+          }}
           placeholder="Confirm password"
           revealable
           secureTextEntry
           value={confirmPassword}
+          error={fieldErrors.confirmPassword ?? undefined}
         />
 
         <View className="gap-3">
-          <Text className="text-[13px] font-medium text-white/70">Date of birth</Text>
+          <Text className="text-[13px] font-medium text-white/70">
+            Date of birth
+          </Text>
           <View className="flex-row gap-3">
             <AuthSelectField
               containerClassName="flex-1"
@@ -436,6 +560,7 @@ export default function SignUpScreen() {
               onPress={() => setActiveDobField("day")}
               placeholder="Day"
               value={selectedDobOptions.day?.label}
+              error={fieldErrors.day ?? undefined}
             />
             <AuthSelectField
               containerClassName="flex-1"
@@ -443,6 +568,7 @@ export default function SignUpScreen() {
               onPress={() => setActiveDobField("month")}
               placeholder="Month"
               value={selectedDobOptions.month?.shortLabel}
+              error={fieldErrors.month ?? undefined}
             />
             <AuthSelectField
               containerClassName="flex-1"
@@ -450,16 +576,25 @@ export default function SignUpScreen() {
               onPress={() => setActiveDobField("year")}
               placeholder="Year"
               value={selectedDobOptions.year?.label}
+              error={fieldErrors.year ?? undefined}
             />
           </View>
         </View>
 
-        <View className="flex-row items-start gap-3 rounded-[18px] border border-white/10 bg-black/60 px-4 py-4">
+        <View
+          className={cn(
+            "flex-row items-start gap-3 rounded-[18px] border bg-black/60 px-4 py-4",
+            fieldErrors.terms ? "border-red-400/80" : "border-white/10",
+          )}
+        >
           <Pressable
             accessibilityRole="checkbox"
             accessibilityState={{ checked: acceptedTerms }}
             className="mt-0.5"
-            onPress={() => setAcceptedTerms((current) => !current)}
+            onPress={() => {
+              setAcceptedTerms((current) => !current);
+              setFieldErrors((prev) => ({ ...prev, terms: null }));
+            }}
           >
             <View
               className={
@@ -476,7 +611,10 @@ export default function SignUpScreen() {
 
           <Text className="flex-1 text-[14px] leading-6 text-white/80">
             I agree to the{" "}
-            <Text className="font-semibold text-brand" onPress={handleOpenTerms}>
+            <Text
+              className="font-semibold text-brand"
+              onPress={handleOpenTerms}
+            >
               terms and conditions
             </Text>
             .
@@ -525,12 +663,17 @@ export default function SignUpScreen() {
         visible={activeDobField !== null}
       >
         <View className="flex-1 justify-end bg-black/70">
-          <Pressable className="absolute inset-0" onPress={() => setActiveDobField(null)} />
+          <Pressable
+            className="absolute inset-0"
+            onPress={() => setActiveDobField(null)}
+          />
 
           {activeDobField ? (
             <View className="max-h-[60%] rounded-t-[28px] border-t border-white/10 bg-[#0b0d0c] px-5 pb-8 pt-5">
               <View className="mb-4 h-1.5 w-12 self-center rounded-full bg-white/20" />
-              <Text className="text-[18px] font-semibold text-white">{dobTitle[activeDobField]}</Text>
+              <Text className="text-[18px] font-semibold text-white">
+                {dobTitle[activeDobField]}
+              </Text>
 
               <ScrollView
                 className="mt-5"
@@ -548,9 +691,17 @@ export default function SignUpScreen() {
                           ? "mb-2 rounded-[18px] border border-brand bg-brand/20 px-4 py-4"
                           : "mb-2 rounded-[18px] border border-white/10 bg-black/50 px-4 py-4"
                       }
-                      onPress={() => handleSelectDob(activeDobField, option.value)}
+                      onPress={() =>
+                        handleSelectDob(activeDobField, option.value)
+                      }
                     >
-                      <Text className={isSelected ? "text-[16px] font-medium text-white" : "text-[16px] text-white/80"}>
+                      <Text
+                        className={
+                          isSelected
+                            ? "text-[16px] font-medium text-white"
+                            : "text-[16px] text-white/80"
+                        }
+                      >
                         {option.label}
                       </Text>
                     </Pressable>
@@ -564,7 +715,7 @@ export default function SignUpScreen() {
 
       <AuthOtpModal
         code={otpCode}
-        destination={pendingSignup?.destination ?? emailOrPhone.trim()}
+        destination={pendingSignup?.destination ?? email.trim()}
         error={otpError}
         loading={isOtpPending}
         onChangeCode={setOtpCode}

@@ -1,8 +1,10 @@
 import {
   Image,
   ImageBackground,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,7 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { cn } from "@/shared/lib/cn";
 
 interface AuthScaffoldProps {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   description: string;
   children: ReactNode;
@@ -62,8 +64,10 @@ export function AuthScaffold({
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <View className="px-6 pb-10 pt-6">
-            {topContent ? <View className="mb-10 pt-2">{topContent}</View> : null}
+          <Pressable className="px-6 pb-10 pt-6" onPress={Keyboard.dismiss}>
+            {topContent ? (
+              <View className="mb-10 pt-2">{topContent}</View>
+            ) : null}
             <View className={cn(panelClassName)}>
               <Text className="text-[13px] font-medium text-white/60">
                 {eyebrow}
@@ -78,7 +82,7 @@ export function AuthScaffold({
               <View className="mt-8 gap-4">{children}</View>
               {footer ? <View className="mt-6">{footer}</View> : null}
             </View>
-          </View>
+          </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
