@@ -1,6 +1,8 @@
+import { auth } from "@/lib/auth";
+import { fetchShow } from "@/lib/show";
+import { getShow } from "@/components/discovery/show.data";
 import { WatchPageClient } from "@/components/player/WatchPageClient";
 import { catalogItems } from "@/components/discovery/catalog.data";
-import { getShow } from "@/components/discovery/show.data";
 
 interface Props {
   params: Promise<{ id: string; locale: string }>;
@@ -8,7 +10,10 @@ interface Props {
 
 export default async function WatchPage({ params }: Props) {
   const { id } = await params;
-  const show = getShow(id);
+  const session = await auth();
+
+  // Try real API first; fall back to mock data during transition
+  const show = (await fetchShow(id)) ?? getShow(id);
 
   const relatedShows = catalogItems
     .filter(
@@ -18,5 +23,5 @@ export default async function WatchPage({ params }: Props) {
     )
     .slice(0, 8);
 
-  return <WatchPageClient show={show} relatedShows={relatedShows} />;
+  return <WatchPageClient show={show} relatedShows={relatedShows} isGuest={!session?.user} />;
 }

@@ -22,6 +22,7 @@ const RESUME_DEBOUNCE_MS = 5000;
 interface Props {
   show: ShowDetail;
   relatedShows: ReadonlyArray<CatalogItem>;
+  isGuest: boolean;
 }
 
 function getResumeKey(showSlug: string, episodeNumber: number) {
@@ -45,7 +46,7 @@ function saveResumeTime(showSlug: string, episodeNumber: number, time: number) {
   }
 }
 
-export function WatchPageClient({ show, relatedShows }: Props) {
+export function WatchPageClient({ show, relatedShows, isGuest }: Props) {
   const [activeEpisode, setActiveEpisode] = useState<Episode>(show.episodes[0]);
   const [language, setLanguage] = useState<"sub" | "dub">("sub");
   const [initialTime, setInitialTime] = useState(() =>
