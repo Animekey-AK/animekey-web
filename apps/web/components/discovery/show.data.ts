@@ -7,6 +7,7 @@ export interface Episode {
   description: string;
   isFree: boolean;
   imageSrc: string;
+  videoId?: string; // backend Video document _id, used for play endpoint
 }
 
 export interface ShowDetail {
@@ -22,6 +23,8 @@ export interface ShowDetail {
   imageSrc: string;
   backdropSrc: string;
   type: "series" | "movie";
+  hasFreeEpisodes?: boolean; // for browse badge
+  contentId?: string;        // backend Content._id for movie play endpoint
 }
 
 const images = [
