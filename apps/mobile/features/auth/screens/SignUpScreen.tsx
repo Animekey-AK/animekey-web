@@ -20,12 +20,6 @@ import { AuthOtpModal } from "@/features/auth/components/AuthOtpModal";
 import { AuthScaffold } from "@/features/auth/components/AuthScaffold";
 import { AuthSelectField } from "@/features/auth/components/AuthSelectField";
 import { authSession } from "@/features/auth/lib/auth-session";
-import { useDevMode } from "@/core/dev/DevModeContext";
-import {
-  mockSignUpWithPassword,
-  mockVerifySignUpOtp,
-  mockResendSignUpOtp,
-} from "@/core/dev/mock-auth";
 import { cn } from "@/shared/lib/cn";
 
 const TERMS_AND_CONDITIONS_URL =
@@ -160,7 +154,9 @@ function isAtLeastMinimumAge(day: string, month: string, year: string) {
 }
 
 export default function SignUpScreen() {
-  const { mockApi } = useDevMode();
+  const { mockApi } = __DEV__
+    ? require("@/core/dev/DevModeContext").useDevMode()
+    : { mockApi: false };
   // const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -312,7 +308,7 @@ export default function SignUpScreen() {
     try {
       setIsPending(true);
       const temporaryToken = mockApi
-        ? await mockSignUpWithPassword()
+        ? await require("@/core/dev/mock-auth").mockSignUpWithPassword()
         : await signUpWithPassword({
             firstName,
             lastName,
@@ -387,7 +383,7 @@ export default function SignUpScreen() {
     try {
       setIsOtpPending(true);
       const response = mockApi
-        ? await mockVerifySignUpOtp()
+        ? await require("@/core/dev/mock-auth").mockVerifySignUpOtp()
         : await verifySignUpOtp(
             otpCode.trim(),
             pendingSignup.temporaryToken,
@@ -428,7 +424,7 @@ export default function SignUpScreen() {
     try {
       setIsOtpPending(true);
       if (mockApi) {
-        await mockResendSignUpOtp();
+        await require("@/core/dev/mock-auth").mockResendSignUpOtp();
       } else {
         await resendSignUpOtp(pendingSignup.temporaryToken);
       }

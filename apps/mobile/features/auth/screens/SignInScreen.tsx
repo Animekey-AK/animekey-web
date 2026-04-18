@@ -9,11 +9,11 @@ import { AuthButton } from "@/features/auth/components/AuthButton";
 import { AuthField } from "@/features/auth/components/AuthField";
 import { AuthScaffold } from "@/features/auth/components/AuthScaffold";
 import { authSession } from "@/features/auth/lib/auth-session";
-import { useDevMode } from "@/core/dev/DevModeContext";
-import { mockSignInWithPassword } from "@/core/dev/mock-auth";
 
 export default function SignInScreen() {
-  const { mockApi } = useDevMode();
+  const { mockApi } = __DEV__
+    ? require("@/core/dev/DevModeContext").useDevMode()
+    : { mockApi: false };
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -35,7 +35,7 @@ export default function SignInScreen() {
     try {
       setIsPending(true);
       const response = mockApi
-        ? await mockSignInWithPassword()
+        ? await require("@/core/dev/mock-auth").mockSignInWithPassword()
         : await signInWithPassword(emailOrPhone, password);
       const { authToken, refreshToken, isGuest = false, nextStep } =
         response.result;

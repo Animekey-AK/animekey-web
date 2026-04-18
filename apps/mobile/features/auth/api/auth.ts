@@ -136,7 +136,6 @@ export async function signInWithPassword(identifier: string, password: string) {
 }
 
 export async function signUpWithPassword(input: SignUpInput) {
-  console.log("Signing up with input:", input);
   const response = await apiClient.post<ApiResponse<string>>(
     AUTH_ENDPOINTS.signUp,
     {
@@ -152,8 +151,6 @@ export async function signUpWithPassword(input: SignUpInput) {
       headers: buildBasicHeaders(),
     },
   );
-
-  console.log("Sign-up response:", response);
 
   return response.result;
 }

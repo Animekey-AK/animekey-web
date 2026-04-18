@@ -29,7 +29,9 @@ export function AuthOtpModal({
 }: AuthOtpModalProps) {
   const otpRef = useRef<OtpInputRef>(null);
 
-  // Sync external code value to the OTP input (e.g. when reset to "")
+  // OtpInput is uncontrolled — parent reads digits via onTextChange and
+  // resets by setting code to "". We only handle the clear case here;
+  // OtpInput handles iOS SMS autofill internally.
   useEffect(() => {
     if (!code) {
       otpRef.current?.clear();
